@@ -50,6 +50,8 @@
     text-size-adjust: 100%;
     /* Keeps anchored content clear of the sticky status bar. */
     scroll-padding-top: 3rem;
+    /* A tap is answered by the page itself (see `[data-tapped]`), not by a grey box from the browser. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -126,6 +128,23 @@
 
     background: var(--paper);
     color: var(--ink);
+  }
+
+  /*
+   * What has just been tapped makes the same swap for a moment, the way a row
+   * does under a pointer. Only on a screen with no pointer, which is where a
+   * browser would lay a grey box of its own over the tap instead. `useTapped`
+   * puts the attribute there and takes it away again.
+   */
+  @media (hover: none) {
+    [data-tapped] {
+      --paper: var(--color-ink);
+      --ink: var(--color-paper);
+      --quiet: var(--color-quiet-inverse);
+
+      background: var(--paper);
+      color: var(--ink);
+    }
   }
 
   /* Small uppercase monospace: labels, navigation, table data. */

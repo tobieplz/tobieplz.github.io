@@ -1,9 +1,8 @@
 import { onScopeDispose, ref, type Ref } from 'vue'
 
-import { prefersReducedMotion } from './motion'
+import { FLASH_MS, prefersReducedMotion } from './motion'
 
 const GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&/+=?'
-const FLASH_MS = 130
 const CHURN_INTERVAL_MS = 70
 const RESOLVE_BASE_MS = 320
 const RESOLVE_PER_CHARACTER_MS = 22

@@ -2,12 +2,15 @@
 /** The frame shared by every page: status bar, header, the page itself, footer. */
 import { RouterView } from 'vue-router'
 
+import { useTapped } from '@/composables/useTapped'
 import { useContent } from '@/content/context'
 import SiteFooter from './SiteFooter.vue'
 import SiteHeader from './SiteHeader.vue'
 import VaultStatus from './VaultStatus.vue'
 
 const { nav } = useContent()
+
+useTapped()
 </script>
 
 <template>

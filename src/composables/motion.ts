@@ -5,6 +5,9 @@
  */
 export const STEP_MS = 35
 
+/** How long something shows that is only there for a moment: noise in a redacted cell, the mark of a tap. */
+export const FLASH_MS = 130
+
 /** Whether the visitor has asked their system for less motion. */
 export function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
