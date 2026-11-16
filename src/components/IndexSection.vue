@@ -64,11 +64,11 @@ const headingId = useId()
   /* Plain blocks, so the heading can be kept on the same page as what follows it. */
   .section {
     display: block;
-    padding-block: var(--space-3) var(--space-6);
+    padding-block: var(--space-2);
   }
 
   .section__head {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
     break-after: avoid;
   }
 }

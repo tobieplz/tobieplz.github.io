@@ -225,13 +225,48 @@ function detailsLabel(client: ClientSlot): string {
     display: block;
   }
 
-  .work__details {
-    padding-block: 0 var(--space-4);
+  /*
+   * On screen the table is one grid, and every line is a subgrid of it. On
+   * paper a write-up has to be able to run on to the next page, and a grid
+   * nested in a grid does not break across pages reliably. So here the table
+   * is plain blocks, and each line lays out its own copy of the same columns.
+   */
+  .index,
+  .work__list,
+  .work__item {
+    display: block;
   }
 
-  /* A project stays on one page, so its line is never left behind at the foot of the page before. */
-  .work__item {
-    break-inside: avoid;
+  .work__head,
+  .work__line {
+    grid-template-columns: var(--index-columns);
+    column-gap: var(--index-gap);
+  }
+
+  /* A project's line stays with the start of its write-up. */
+  .work__line {
+    break-after: avoid;
+  }
+
+  /* The font of the lines above, so that `ch` measures the same columns here as there. */
+  .work__details {
+    max-width: none;
+    margin-left: calc(16ch + 2 * var(--index-gap));
+    padding-block: 0 var(--space-2);
+    font: inherit;
+  }
+
+  .work__details p {
+    max-width: var(--measure);
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: 1.42;
+    orphans: 2;
+    widows: 2;
+  }
+
+  .work__details p + p {
+    margin-top: var(--space-2);
   }
 }
 </style>

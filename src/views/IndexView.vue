@@ -143,7 +143,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 <style scoped>
 .intro {
-  padding-block: var(--space-6) var(--space-8);
+  padding-block: var(--space-7);
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
@@ -213,16 +213,15 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   overflow-wrap: anywhere;
 }
 
-/* Beside its section label, the photo starts level with the label's text. */
 @media (width >= 72rem) {
+  /* At this width the line in the title row above already sets the intro apart. */
+  .intro {
+    border-top: 0;
+  }
+
+  /* Beside its section label, the photo starts level with the label's text. */
   .about {
     padding-top: var(--space-3);
-  }
-}
-
-@media (width < 72rem) {
-  .intro {
-    padding-bottom: var(--space-7);
   }
 }
 
@@ -254,7 +253,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 @media print {
   .intro {
-    padding-block: var(--space-4) var(--space-6);
+    padding-block: var(--space-3);
   }
 
   .intro__lead {
@@ -268,7 +267,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   }
 
   .about__portrait {
-    width: 7rem;
+    width: 6rem;
   }
 
   .about__facts {
@@ -276,7 +275,8 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   }
 
   .about__bio {
-    gap: var(--space-3);
+    gap: var(--space-2);
+    line-height: 1.42;
   }
 
   .contact__lead {

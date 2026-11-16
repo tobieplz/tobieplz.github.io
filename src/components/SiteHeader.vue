@@ -110,6 +110,16 @@ const isPoster = computed(() => route.name !== NOT_FOUND_ROUTE)
   }
 }
 
+/*
+ * At this width no rule follows the title row on the page, only the intro, and
+ * the intro brings the same space above itself as below. So the row adds none.
+ */
+@media screen and (width >= 72rem) {
+  .masthead--poster .masthead__title {
+    padding-bottom: 0;
+  }
+}
+
 @media print {
   .masthead {
     padding-top: 0;
