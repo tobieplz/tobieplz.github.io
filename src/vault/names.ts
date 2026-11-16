@@ -27,6 +27,7 @@ export const CLIENT_SLOTS = [
   'c18',
   'c19',
   'c20',
+  'c21',
 ] as const
 
 export const EMPLOYER_SLOTS = ['e01', 'e02', 'e03', 'e04', 'e05', 'e06'] as const

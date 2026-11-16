@@ -41,11 +41,6 @@ export interface Course {
   readonly programme: string
 }
 
-export interface SkillGroup {
-  readonly label: string
-  readonly skills: readonly string[]
-}
-
 export interface Fact {
   readonly label: string
   readonly value: string
@@ -116,7 +111,6 @@ export interface Content {
     }
     readonly clients: { readonly heading: string; readonly engagements: readonly Engagement[] }
     readonly experience: { readonly heading: string; readonly jobs: readonly Job[] }
-    readonly toolbox: { readonly heading: string; readonly groups: readonly SkillGroup[] }
     readonly approach: { readonly heading: string; readonly principles: readonly Principle[] }
     readonly education: { readonly heading: string; readonly courses: readonly Course[] }
     readonly contact: {

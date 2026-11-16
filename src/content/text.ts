@@ -7,6 +7,14 @@ export function hidden(slot: Slot, variant: NameVariant = 'name'): NameRef {
 }
 
 /**
+ * Sets a short list on one line with dots between the items. The space before
+ * a dot does not break, so a wrapped line never starts with one.
+ */
+export function dotted(items: readonly string[]): string {
+  return items.join('\u00a0· ')
+}
+
+/**
  * Tagged template for prose that mentions hidden names:
  *
  *   text`Frontend developer at ${hidden('c03')}.`

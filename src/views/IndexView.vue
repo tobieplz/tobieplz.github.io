@@ -1,5 +1,7 @@
 <script setup lang="ts">
 /** The page: a CV as one numbered index. */
+import portraitSmall from '@/assets/portrait-small.webp'
+import portraitSize from '@/assets/portrait.json'
 import portrait from '@/assets/portrait.webp'
 import IndexSection from '@/components/IndexSection.vue'
 import PlainIndex from '@/components/PlainIndex.vue'
@@ -12,12 +14,14 @@ import { site, type ContactChannel } from '@/content/site'
 import { hidden } from '@/content/text'
 import { slotNumber } from '@/vault/names'
 
-/** `pnpm portrait` always writes a square, so these only need to state the ratio. */
-const PORTRAIT_SIZE = 480
-
 const { index } = useContent()
 
 usePageHead('index')
+
+/** `pnpm portrait` writes the photo in two sizes; the browser takes the one that fits. */
+const portraitSources = `${portraitSmall} ${portraitSize.smallWidth}w, ${portrait} ${portraitSize.width}w`
+/** How wide the photo is shown: beside the text from 56rem up, above it on narrower screens. */
+const PORTRAIT_SIZES = '(min-width: 72rem) 34vw, (min-width: 56rem) 43vw, min(100vw - 2rem, 24rem)'
 
 const numbered = (position: number) => String(position + 1).padStart(2, '0')
 
@@ -34,12 +38,6 @@ const jobRows: PlainRow[] = index.experience.jobs.map((job, position) => ({
   when: job.years,
   who: [hidden(job.employer)],
   what: job.title,
-}))
-
-const skillRows: PlainRow[] = index.toolbox.groups.map((group, position) => ({
-  no: numbered(position),
-  who: [group.label],
-  what: group.skills.join(' · '),
 }))
 
 const principleRows: PlainRow[] = index.approach.principles.map((principle, position) => ({
@@ -84,22 +82,24 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
       <img
         class="about__portrait"
         :src="portrait"
+        :srcset="portraitSources"
+        :sizes="PORTRAIT_SIZES"
         :alt="index.about.portraitAlt"
-        :width="PORTRAIT_SIZE"
-        :height="PORTRAIT_SIZE"
+        :width="portraitSize.width"
+        :height="portraitSize.height"
         decoding="async"
       />
+      <div class="about__bio prose">
+        <p v-for="(paragraph, position) in index.about.bio" :key="position">
+          <RichText :text="paragraph" />
+        </p>
+      </div>
       <dl class="about__facts label">
         <div v-for="fact in index.about.facts" :key="fact.label">
           <dt>{{ fact.label }}</dt>
           <dd>{{ fact.value }}</dd>
         </div>
       </dl>
-      <div class="about__bio prose">
-        <p v-for="(paragraph, position) in index.about.bio" :key="position">
-          <RichText :text="paragraph" />
-        </p>
-      </div>
     </div>
   </IndexSection>
 
@@ -115,19 +115,15 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <PlainIndex :rows="jobRows" />
   </IndexSection>
 
-  <IndexSection number="05" :heading="index.toolbox.heading">
-    <PlainIndex :rows="skillRows" />
-  </IndexSection>
-
-  <IndexSection number="06" :heading="index.approach.heading">
+  <IndexSection number="05" :heading="index.approach.heading">
     <PlainIndex :rows="principleRows" />
   </IndexSection>
 
-  <IndexSection number="07" :heading="index.education.heading">
+  <IndexSection number="06" :heading="index.education.heading">
     <PlainIndex :rows="courseRows" />
   </IndexSection>
 
-  <IndexSection v-if="channels.length > 0" number="08" :heading="index.contact.heading">
+  <IndexSection v-if="channels.length > 0" number="07" :heading="index.contact.heading">
     <p class="contact__lead">{{ index.contact.lead }}</p>
     <ul class="index" role="list" :style="{ '--address-length': addressLength }">
       <li v-for="(entry, position) in channels" :key="entry.channel" class="index__row">
@@ -157,26 +153,39 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 }
 
 /*
- * The photo, the facts and the text stand on the columns of the indexes below
- * them (the block is an `index` itself): the photo where the numbers and years
- * are, the facts where the names are, and the text where the descriptions are.
+ * The photo and the text stand on the columns of the indexes below them (the
+ * block is an `index` itself): the photo runs from the numbers to the end of
+ * the names, and the text and the facts start where the descriptions do.
  */
 .about {
-  row-gap: var(--space-4);
+  grid-template-rows: auto 1fr;
+  row-gap: var(--space-5);
   align-items: start;
 }
 
 .about__portrait {
-  grid-column: no / who;
+  grid-row: 1 / span 2;
+  grid-column: no / role;
   width: 100%;
   border: var(--rule) solid var(--ink);
 }
 
+/* Two columns of facts on the two columns under them, resting on the foot of the photo. */
 .about__facts {
   display: grid;
-  grid-column: who / role;
-  gap: var(--space-3);
+  grid-template-columns: subgrid;
+  grid-column: role / end;
+  row-gap: var(--space-3);
+  align-self: end;
   margin: 0;
+}
+
+.about__facts > :nth-child(odd) {
+  grid-column: 1;
+}
+
+.about__facts > :nth-child(even) {
+  grid-column: 2 / -1;
 }
 
 .about__facts dt {
@@ -243,22 +252,26 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   }
 }
 
-/* Where the index is stacked, the photo and the facts share a line and the text gets the full width. */
+/* Where the index is stacked, so is this: the photo, the text, then the facts side by side. */
 @media screen and (width < 56rem) {
   .about {
-    grid-template-columns: minmax(0, min(14rem, 40%)) minmax(0, 1fr);
+    grid-template: auto / minmax(0, 1fr);
   }
 
-  .about__portrait {
+  .about__portrait,
+  .about__bio,
+  .about__facts {
+    grid-row: auto;
     grid-column: 1;
   }
 
-  .about__facts {
-    grid-column: 2;
+  .about__portrait {
+    max-width: 24rem;
   }
 
-  .about__bio {
-    grid-column: 1 / -1;
+  .about__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--index-gap);
   }
 }
 
@@ -268,27 +281,29 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   }
 
   .intro__lead {
-    max-width: 44ch;
+    max-width: 58ch;
   }
 
-  /* On paper the facts go under a smaller photo, which leaves the text a wider column. */
+  /* On paper: a small photo, the facts in one column beside it, and then the text. */
   .about {
-    grid-template: auto 1fr / 11rem minmax(0, 1fr);
-    gap: var(--space-3) var(--space-5);
+    grid-template: auto / 6rem 10rem minmax(0, 1fr);
+    gap: var(--space-5);
   }
 
   .about__portrait {
     grid-area: 1 / 1;
-    width: 6rem;
   }
 
   .about__facts {
-    grid-area: 2 / 1;
+    display: flex;
+    flex-direction: column;
+    grid-area: 1 / 2;
     gap: var(--space-2);
+    align-self: start;
   }
 
   .about__bio {
-    grid-area: 1 / 2 / span 2;
+    grid-area: 1 / 3;
   }
 
   .contact__lead {

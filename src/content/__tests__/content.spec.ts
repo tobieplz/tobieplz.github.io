@@ -4,7 +4,7 @@ import { SLOTS } from '@/vault/names'
 import { content as en } from '../en'
 import type { Content, RichText } from '../schema'
 import { content as sv } from '../sv'
-import { hidden, text } from '../text'
+import { dotted, hidden, text } from '../text'
 
 /** The slots a locale mentions, in order: what a reader would see as black cells. */
 function slotsIn(content: Content): string[] {
@@ -32,15 +32,17 @@ describe('the two languages', () => {
   })
 
   it('agree on the facts that do not translate', () => {
+    // "2023–now" and "2023–nu" are the same years: only the digits have to match.
+    const digits = (years: string) => years.replace(/\D+$/, '')
+
     const facts = (content: Content) => ({
       projects: content.index.work.projects.map(({ years, stack, story }) => ({
-        years,
+        years: digits(years),
         stack,
         paragraphs: story.length,
       })),
-      jobs: content.index.experience.jobs.map(({ years }) => years.replace(/\D+$/, '')),
+      jobs: content.index.experience.jobs.map(({ years }) => digits(years)),
       courses: content.index.education.courses.map(({ years, school }) => ({ years, school })),
-      skillGroups: content.index.toolbox.groups.map((group) => group.skills.length),
       bioParagraphs: content.index.about.bio.length,
       facts: content.index.about.facts.length,
       principles: content.index.approach.principles.length,
@@ -63,5 +65,12 @@ describe('text', () => {
 
   it('drops the empty strings around a reference at either end', () => {
     expect(text`${hidden('e01')}`).toEqual([{ slot: 'e01', variant: 'name' }])
+  })
+})
+
+describe('dotted', () => {
+  it('joins items with a dot that stays on the line of the item before it', () => {
+    expect(dotted(['Vue', 'Figma', 'CSS'])).toBe('Vue\u00a0· Figma\u00a0· CSS')
+    expect(dotted(['Vue'])).toBe('Vue')
   })
 })

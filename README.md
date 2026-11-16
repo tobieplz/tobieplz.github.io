@@ -59,7 +59,7 @@ pnpm install
 | `pnpm seal`         | Encrypts `private/names.json` into `src/vault/sealed.json`           |
 | `pnpm unseal`       | Recreates `private/names.json` from the sealed file                  |
 | `pnpm check:leaks`  | Fails if a private name is in a public file                          |
-| `pnpm portrait`     | Prepares the portrait from `assets-src/portrait.png`                 |
+| `pnpm portrait`     | Prepares the portrait from `assets-src/portrait.webp`                |
 | `pnpm share-image`  | Renders `public/og.png` from `assets-src/share-image.html`           |
 
 ## Changing things
@@ -78,7 +78,7 @@ text`Frontend developer at ${hidden('c03')}.`
 
 **Contact details.** `src/content/site.ts`. An empty value hides that row.
 
-**Photo.** `pnpm portrait path/to/photo.jpg` crops it square, converts it to black and white and writes `src/assets/portrait.webp`.
+**Photo.** `pnpm portrait path/to/photo.jpg` writes it to `src/assets/` in two sizes for the page to choose between, with the sizes noted beside them. The colours and the shape of the photo are kept.
 
 ## Deploying
 

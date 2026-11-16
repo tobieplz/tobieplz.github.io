@@ -4,6 +4,7 @@ import { reactive, useId } from 'vue'
 
 import { useContent } from '@/content/context'
 import type { Project } from '@/content/schema'
+import { dotted } from '@/content/text'
 import { slotNumber, type ClientSlot } from '@/vault/names'
 import RedactedName from './RedactedName.vue'
 import RichText from './RichText.vue'
@@ -62,8 +63,7 @@ function detailsLabel(client: ClientSlot): string {
             <span class="visually-hidden">{{ columns.role }}: </span>{{ project.role }}
           </span>
           <span class="work__stack">
-            <span class="visually-hidden">{{ columns.stack }}: </span
-            >{{ project.stack.join(' · ') }}
+            <span class="visually-hidden">{{ columns.stack }}: </span>{{ dotted(project.stack) }}
           </span>
           <button
             type="button"
