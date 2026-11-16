@@ -7,7 +7,7 @@ import IndexSection from '@/components/IndexSection.vue'
 import PlainIndex from '@/components/PlainIndex.vue'
 import RichText from '@/components/RichText.vue'
 import WorkIndex from '@/components/WorkIndex.vue'
-import type { PlainRow } from '@/components/types'
+import type { PlainColumns, PlainRow } from '@/components/types'
 import { usePageHead } from '@/composables/usePageHead'
 import { useContent } from '@/content/context'
 import type { Company } from '@/content/schema'
@@ -15,6 +15,7 @@ import { site, type ContactChannel } from '@/content/site'
 import { hidden, numbered } from '@/content/text'
 
 const { index } = useContent()
+const { columns } = index
 
 usePageHead('index')
 
@@ -27,6 +28,12 @@ const PORTRAIT_SIZES = '(min-width: 72rem) 34vw, (min-width: 56rem) 43vw, min(10
 const shown = (company: Company): PlainRow['who'] =>
   typeof company === 'string' ? [hidden(company)] : [company.name]
 
+const clientColumns: PlainColumns = {
+  no: columns.number,
+  when: columns.sector,
+  who: columns.client,
+  what: columns.project,
+}
 // The numbers continue from the main table, so that every client has one of its own.
 const clientRows: PlainRow[] = index.clients.engagements.map((engagement, position) => ({
   no: numbered(index.work.projects.length + position),
@@ -35,6 +42,12 @@ const clientRows: PlainRow[] = index.clients.engagements.map((engagement, positi
   what: engagement.work,
 }))
 
+const jobColumns: PlainColumns = {
+  no: columns.number,
+  when: columns.years,
+  who: columns.employer,
+  what: columns.role,
+}
 const jobRows: PlainRow[] = index.experience.jobs.map((job, position) => ({
   no: numbered(position),
   when: job.years,
@@ -42,12 +55,23 @@ const jobRows: PlainRow[] = index.experience.jobs.map((job, position) => ({
   what: job.title,
 }))
 
+const principleColumns: PlainColumns = {
+  no: columns.number,
+  who: columns.principle,
+  what: columns.practice,
+}
 const principleRows: PlainRow[] = index.approach.principles.map((principle, position) => ({
   no: numbered(position),
   who: [principle.title],
   what: principle.body,
 }))
 
+const courseColumns: PlainColumns = {
+  no: columns.number,
+  when: columns.years,
+  who: columns.school,
+  what: columns.programme,
+}
 const courseRows: PlainRow[] = index.education.courses.map((course, position) => ({
   no: numbered(position),
   when: course.years,
@@ -110,32 +134,40 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   </IndexSection>
 
   <IndexSection number="03" :heading="index.clients.heading" :count="clientRows.length" joined>
-    <PlainIndex :rows="clientRows" />
+    <PlainIndex :columns="clientColumns" :rows="clientRows" />
   </IndexSection>
 
   <IndexSection number="04" :heading="index.experience.heading" :count="jobRows.length" joined>
-    <PlainIndex :rows="jobRows" />
+    <PlainIndex :columns="jobColumns" :rows="jobRows" />
   </IndexSection>
 
   <IndexSection number="05" :heading="index.education.heading" joined>
-    <PlainIndex :rows="courseRows" />
+    <PlainIndex :columns="courseColumns" :rows="courseRows" />
   </IndexSection>
 
   <IndexSection number="06" :heading="index.approach.heading">
-    <PlainIndex :rows="principleRows" />
+    <PlainIndex :columns="principleColumns" :rows="principleRows" />
   </IndexSection>
 
   <IndexSection v-if="channels.length > 0" number="07" :heading="index.contact.heading">
     <p class="contact__lead">{{ index.contact.lead }}</p>
-    <ul class="index" role="list" :style="{ '--address-length': addressLength }">
-      <li v-for="(entry, position) in channels" :key="entry.channel" class="index__row">
-        <span class="index__no" aria-hidden="true">{{ numbered(position) }}</span>
-        <span class="index__when">{{ index.contact.channels[entry.channel] }}</span>
-        <span class="index__who index__who--to-end contact__link">
-          <a :href="entry.href">{{ entry.text }}</a>
-        </span>
-      </li>
-    </ul>
+    <div class="index" :style="{ '--address-length': addressLength }">
+      <div class="index__row index__head contact__head" aria-hidden="true">
+        <span class="index__no row-baseline">{{ columns.number }}</span>
+        <span class="index__when">{{ columns.channel }}</span>
+        <span class="index__who index__who--to-end">{{ columns.address }}</span>
+      </div>
+
+      <ul class="index__list" role="list">
+        <li v-for="(entry, position) in channels" :key="entry.channel" class="index__row">
+          <span class="index__no" aria-hidden="true">{{ numbered(position) }}</span>
+          <span class="index__when">{{ index.contact.channels[entry.channel] }}</span>
+          <span class="index__who index__who--to-end contact__link">
+            <a :href="entry.href">{{ entry.text }}</a>
+          </span>
+        </li>
+      </ul>
+    </div>
   </IndexSection>
 </template>
 
@@ -208,8 +240,14 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 }
 
 /* Every other list ends with a rule, so this one does too. */
-.index__row:last-child {
+.index__list > :last-child {
   border-bottom: var(--rule) solid var(--ink);
+}
+
+/* These headings follow the lead, not the section label, so they have nothing to line up with. */
+.contact__head {
+  padding-top: 0;
+  border-top: 0;
 }
 
 .contact__lead {

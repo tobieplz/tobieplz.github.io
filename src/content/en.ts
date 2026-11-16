@@ -65,6 +65,15 @@ export const content: Content = {
       client: 'Client',
       role: 'Role',
       stack: 'Stack',
+      sector: 'Sector',
+      project: 'Project',
+      employer: 'Employer',
+      school: 'School',
+      programme: 'Programme',
+      principle: 'Principle',
+      practice: 'In practice',
+      channel: 'Channel',
+      address: 'Address',
     },
 
     work: {

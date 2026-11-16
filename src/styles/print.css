@@ -34,6 +34,11 @@
     break-inside: avoid;
   }
 
+  /* Column headings stay on the page of the rows under them. */
+  .index__head {
+    break-after: avoid;
+  }
+
   .prose {
     line-height: 1.42;
   }

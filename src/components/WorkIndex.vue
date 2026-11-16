@@ -41,7 +41,7 @@ function clientLabel({ client }: Project): string {
 
 <template>
   <div class="index">
-    <div class="index__row work__head" aria-hidden="true">
+    <div class="index__row index__head work__head" aria-hidden="true">
       <span class="index__no row-baseline">{{ columns.number }}</span>
       <span class="index__when">{{ columns.years }}</span>
       <span class="work__client">{{ columns.client }}</span>
@@ -100,13 +100,6 @@ function clientLabel({ client }: Project): string {
 
 .work__list {
   border-bottom: var(--rule) solid var(--ink);
-}
-
-.work__head {
-  padding-block: 0 var(--space-2);
-  border-top: 0;
-  color: var(--quiet);
-  text-transform: uppercase;
 }
 
 .work__line {
@@ -179,13 +172,6 @@ function clientLabel({ client }: Project): string {
   padding-block: var(--space-2) var(--space-6);
 }
 
-/* Beside the section label, the column headings stand where the text of a first row would. */
-@media (width >= 72rem) {
-  .work__head {
-    padding-top: calc(var(--space-3) + var(--rule));
-  }
-}
-
 /* Without JavaScript the rows cannot be opened, so show every write-up. */
 @media (scripting: none) {
   .work__details[hidden] {
@@ -198,10 +184,6 @@ function clientLabel({ client }: Project): string {
 }
 
 @media screen and (width < 56rem) {
-  .work__head {
-    display: none;
-  }
-
   .work__line {
     position: relative;
     row-gap: var(--space-1);

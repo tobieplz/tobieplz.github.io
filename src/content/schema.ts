@@ -99,12 +99,22 @@ export interface Content {
       /** One entry per paragraph. */
       readonly bio: readonly RichText[]
     }
+    /** The headings over the columns of the lists. Each list uses the ones that fit it. */
     readonly columns: {
       readonly number: string
       readonly years: string
       readonly client: string
       readonly role: string
       readonly stack: string
+      readonly sector: string
+      readonly project: string
+      readonly employer: string
+      readonly school: string
+      readonly programme: string
+      readonly principle: string
+      readonly practice: string
+      readonly channel: string
+      readonly address: string
     }
     readonly work: {
       readonly heading: string

@@ -193,6 +193,45 @@
     line-height: 1.4;
   }
 
+  /* The rows of a list that has column headings over it: they keep to the columns of the index. */
+  .index__list {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  /* The column headings. A row of the index too, but small and quiet, and with no rule over it. */
+  .index__head {
+    padding-block: 0 var(--space-2);
+    border-top: 0;
+    color: var(--quiet);
+    text-transform: uppercase;
+  }
+
+  .index__head > .index__who,
+  .index__head > .index__what {
+    font: inherit;
+  }
+
+  /*
+   * Beside a section label, the headings start as far down as the label does:
+   * under a rule and its padding, like the text of any row. Under a section's
+   * heavy rule that rule is left out. A section without one sets --head-rule.
+   */
+  @media (width >= 72rem) {
+    .index__head {
+      padding-top: var(--space-3);
+      border-top: var(--rule) solid var(--head-rule, transparent);
+    }
+  }
+
+  /* Stacked, the columns are gone, and their headings with them. */
+  @media screen and (width < 56rem) {
+    .index__head {
+      display: none;
+    }
+  }
+
   /*
    * A row takes its baseline from the body-sized text in it. A line of small
    * text that stands beside a first row, such as a section label, gets the
