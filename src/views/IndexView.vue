@@ -143,7 +143,8 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 <style scoped>
 .intro {
-  padding-block: var(--section-space);
+  /* 38px above and below: the intro keeps closer to its rules than the sections do. */
+  padding-block: 2.375rem;
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
@@ -217,6 +218,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 @media (width >= 72rem) {
   /* At this width the line in the title row above already sets the intro apart. */
   .intro {
+    padding-block: var(--space-7);
     border-top: 0;
   }
 

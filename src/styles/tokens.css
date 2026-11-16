@@ -43,7 +43,7 @@
   --rule-heavy: 6px;
   --measure: 62ch;
 
-  /* The space left under every block before the next heavy rule, and on both sides of the intro. */
+  /* The space left under every section before the next heavy rule, and at the foot of the page. */
   --section-space: var(--space-7);
 
   /* Every index on the site uses this one column template, so they all line up. */
