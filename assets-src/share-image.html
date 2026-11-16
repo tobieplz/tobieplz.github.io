@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+  Source of public/og.png, the image shown when a link to the site is shared.
+  `pnpm share-image` photographs this page at 1200 x 630 with headless Chrome.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Share image</title>
+    <style>
+      @font-face {
+        font-family: 'Archivo';
+        font-weight: 100 900;
+        src: url('../node_modules/@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2');
+      }
+
+      @font-face {
+        font-family: 'JetBrains Mono';
+        font-weight: 100 800;
+        src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2');
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        width: 1200px;
+        height: 630px;
+        padding: 0 56px 48px;
+        background: #0a0a0a;
+        color: #f5f5f5;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 22px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .status {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        margin-inline: -56px;
+        padding: 18px 56px;
+        background: #f5f5f5;
+        color: #0a0a0a;
+      }
+
+      .status::before {
+        width: 16px;
+        height: 16px;
+        background: #0a0a0a;
+        content: '';
+      }
+
+      h1 {
+        align-self: center;
+        font-family: 'Archivo', sans-serif;
+        font-size: 222px;
+        font-weight: 900;
+        line-height: 0.96;
+        letter-spacing: -0.05em;
+      }
+
+      h1 span {
+        display: block;
+      }
+
+      .title {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        padding-top: 22px;
+        border-top: 6px solid #f5f5f5;
+      }
+
+      .title::after {
+        order: 1;
+        flex: 1;
+        height: 2px;
+        background: #f5f5f5;
+        content: '';
+      }
+
+      .title span:last-child {
+        order: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="status">26 names withheld</p>
+    <h1><span>Tobias</span> <span>Sjösten</span></h1>
+    <p class="title"><span>Senior Product Engineer</span> <span>Frontend, design &amp; AI</span></p>
+  </body>
+</html>

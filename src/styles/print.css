@@ -1,0 +1,36 @@
+/*
+ * Print: a compact black-on-white CV on A4. These are the page-wide settings;
+ * each component hides its own controls in its own print block.
+ */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  :root,
+  :root[data-theme] {
+    color-scheme: light;
+
+    --text-xs: 6.5pt;
+    --text-sm: 7.5pt;
+    --text-md: 9.5pt;
+    --text-lg: 12pt;
+    --text-xl: 16pt;
+
+    --space-5: 0.75rem;
+    --space-6: 1rem;
+    --space-7: 1.25rem;
+    --space-8: 1.5rem;
+
+    --gutter: 0;
+    --rule: 1px;
+    --rule-heavy: 3px;
+    --index-gap: 0.75rem;
+  }
+
+  .index__row {
+    padding-block: var(--space-1);
+    break-inside: avoid;
+  }
+}

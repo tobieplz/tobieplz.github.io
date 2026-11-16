@@ -1,0 +1,66 @@
+/*
+ * Design tokens: two colours, two typefaces, one accent, hard rules.
+ *
+ * Colours go through light-dark(), which follows the system setting. The
+ * invert toggle overrides that by putting data-theme on <html>.
+ */
+@layer reset, base, layout;
+
+:root {
+  color-scheme: light dark;
+
+  --color-paper: light-dark(#fff, #0a0a0a);
+  --color-ink: light-dark(#0a0a0a, #f5f5f5);
+  --color-quiet: light-dark(#595959, #a6a6a6);
+  --color-quiet-inverse: light-dark(#a6a6a6, #595959);
+
+  /* Components use these three. `.inverted` swaps them for everything inside it. */
+  --paper: var(--color-paper);
+  --ink: var(--color-ink);
+  --quiet: var(--color-quiet);
+  --accent: light-dark(#e03800, #ff5c26);
+
+  --font-sans: 'Archivo Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-lg: clamp(1.25rem, 1.05rem + 0.9vw, 1.875rem);
+  --text-xl: clamp(1.75rem, 1.2rem + 2.6vw, 3.5rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 5rem;
+
+  --gutter: clamp(1rem, 3vw, 2.5rem);
+  --rule: 2px;
+  --rule-heavy: 6px;
+  --measure: 62ch;
+
+  /* Every index on the site uses this one column template, so they all line up. */
+  --index-columns: [no] 3ch [when] 13ch [who] minmax(0, 1.25fr) [role] minmax(0, 1fr) [stack]
+    minmax(0, 1fr) [toggle] 2rem [end];
+  --index-gap: var(--space-5);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* On a narrow screen the middle columns collapse into one and the cells stack. */
+@media screen and (width < 56rem) {
+  :root {
+    --index-columns: [no] 3ch [when who role stack] minmax(0, 1fr) [toggle] 2rem [end];
+    --index-gap: var(--space-4);
+  }
+}
