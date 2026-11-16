@@ -107,7 +107,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <WorkIndex :projects="index.work.projects" />
   </IndexSection>
 
-  <IndexSection number="03" :heading="index.clients.heading" :count="clientRows.length">
+  <IndexSection number="03" :heading="index.clients.heading" :count="clientRows.length" joined>
     <PlainIndex :rows="clientRows" />
   </IndexSection>
 
@@ -115,12 +115,12 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <PlainIndex :rows="jobRows" />
   </IndexSection>
 
-  <IndexSection number="05" :heading="index.approach.heading">
-    <PlainIndex :rows="principleRows" />
+  <IndexSection number="05" :heading="index.education.heading" joined>
+    <PlainIndex :rows="courseRows" />
   </IndexSection>
 
-  <IndexSection number="06" :heading="index.education.heading">
-    <PlainIndex :rows="courseRows" />
+  <IndexSection number="06" :heading="index.approach.heading">
+    <PlainIndex :rows="principleRows" />
   </IndexSection>
 
   <IndexSection v-if="channels.length > 0" number="07" :heading="index.contact.heading">

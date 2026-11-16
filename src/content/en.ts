@@ -197,12 +197,23 @@ export const content: Content = {
       ],
     },
 
+    education: {
+      heading: 'Education',
+      courses: [
+        {
+          years: '2012–2014',
+          school: 'YHC3L',
+          programme: 'Vocational degree in iOS and web development',
+        },
+      ],
+    },
+
     approach: {
       heading: 'How I work',
       principles: [
         {
           title: 'Design and code in one head',
-          body: 'I design in Figma and build in the browser, so nothing gets lost on the way from one to the other.',
+          body: 'I design it and I build it: websites, apps and the backends behind them. Nothing gets lost on the way from one to the other.',
         },
         {
           title: 'AI in the loop',
@@ -211,17 +222,6 @@ export const content: Content = {
         {
           title: 'Small team or big ship',
           body: 'Quick, close collaboration in a small team, or steady long-term work in a large one. I have done plenty of both.',
-        },
-      ],
-    },
-
-    education: {
-      heading: 'Education',
-      courses: [
-        {
-          years: '2012–2014',
-          school: 'YHC3L',
-          programme: 'Vocational degree in iOS and web development',
         },
       ],
     },

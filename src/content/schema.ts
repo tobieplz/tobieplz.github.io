@@ -111,8 +111,8 @@ export interface Content {
     }
     readonly clients: { readonly heading: string; readonly engagements: readonly Engagement[] }
     readonly experience: { readonly heading: string; readonly jobs: readonly Job[] }
-    readonly approach: { readonly heading: string; readonly principles: readonly Principle[] }
     readonly education: { readonly heading: string; readonly courses: readonly Course[] }
+    readonly approach: { readonly heading: string; readonly principles: readonly Principle[] }
     readonly contact: {
       readonly heading: string
       readonly lead: string

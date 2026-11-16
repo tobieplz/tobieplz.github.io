@@ -31,10 +31,13 @@ defineProps<{ rows: readonly PlainRow[] }>()
   border-bottom: var(--rule) solid var(--ink);
 }
 
-/* Beside its section label the list starts right under the section's heavy rule, which is line enough. */
+/*
+ * Beside its section label the list starts right under the section's heavy
+ * rule, which is line enough. A section without that rule sets --first-rule.
+ */
 @media (width >= 72rem) {
   .index__row:first-child {
-    border-top-color: transparent;
+    border-top-color: var(--first-rule, transparent);
   }
 }
 

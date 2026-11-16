@@ -197,12 +197,23 @@ export const content: Content = {
       ],
     },
 
+    education: {
+      heading: 'Utbildning',
+      courses: [
+        {
+          years: '2012–2014',
+          school: 'YHC3L',
+          programme: 'Yrkeshögskoleutbildning i iOS- och webbutveckling',
+        },
+      ],
+    },
+
     approach: {
       heading: 'Så jobbar jag',
       principles: [
         {
           title: 'Design och kod i samma huvud',
-          body: 'Jag designar i Figma och bygger i webbläsaren, så inget tappas bort på vägen mellan dem.',
+          body: 'Jag både designar och bygger: webbplatser, appar och backenden bakom dem. Inget tappas bort på vägen däremellan.',
         },
         {
           title: 'AI med i loopen',
@@ -211,17 +222,6 @@ export const content: Content = {
         {
           title: 'Litet team eller stort skepp',
           body: 'Snabbt och nära samarbete i ett litet team, eller långsiktigt arbete i ett stort. Jag har gjort mycket av båda.',
-        },
-      ],
-    },
-
-    education: {
-      heading: 'Utbildning',
-      courses: [
-        {
-          years: '2012–2014',
-          school: 'YHC3L',
-          programme: 'Yrkeshögskoleutbildning i iOS- och webbutveckling',
         },
       ],
     },

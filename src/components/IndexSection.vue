@@ -1,14 +1,18 @@
 <script setup lang="ts">
-/** A numbered section: its label down the left, its content to the right. */
+/**
+ * A numbered section: its label down the left, its content to the right.
+ * Sections are divided by a heavy rule, unless one is `joined` to the section
+ * above it because the two belong together.
+ */
 import { useId } from 'vue'
 
-defineProps<{ number: string; heading: string; count?: number }>()
+defineProps<{ number: string; heading: string; count?: number; joined?: boolean }>()
 
 const headingId = useId()
 </script>
 
 <template>
-  <section class="section" :aria-labelledby="headingId">
+  <section class="section" :class="{ 'section--joined': joined }" :aria-labelledby="headingId">
     <header class="section__head label">
       <span class="section__number row-baseline" aria-hidden="true">{{ number }}</span>
       <h2 :id="headingId" class="section__heading">{{ heading }}</h2>
@@ -29,6 +33,13 @@ const headingId = useId()
   gap: var(--space-4) var(--index-gap);
   padding-block: var(--space-4) var(--section-space);
   border-top: var(--rule-heavy) solid var(--ink);
+}
+
+/* No heavy rule to start under, so the list inside draws its own first line. */
+.section--joined {
+  --first-rule: var(--ink);
+
+  border-top: 0;
 }
 
 .section__head {
