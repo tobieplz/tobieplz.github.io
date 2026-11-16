@@ -52,7 +52,7 @@ function clientLabel({ client }: Project): string {
     <!-- role="list" because Safari drops list semantics once list-style is none. -->
     <ol class="work__list" role="list">
       <li v-for="(project, row) in projects" :key="row" class="work__item">
-        <div class="index__row work__line" @click="onLineClick($event, row)">
+        <div class="index__row index__row--action work__line" @click="onLineClick($event, row)">
           <span class="index__no" aria-hidden="true">{{ numbered(row) }}</span>
           <span class="index__when">
             <span class="visually-hidden">{{ columns.years }}: </span>{{ project.years }}
@@ -72,7 +72,7 @@ function clientLabel({ client }: Project): string {
           </span>
           <button
             type="button"
-            class="work__toggle"
+            class="index__toggle work__toggle"
             :aria-expanded="open.has(row)"
             :aria-controls="`${baseId}-${row}`"
             :aria-label="work.details(clientLabel(project))"
@@ -102,22 +102,6 @@ function clientLabel({ client }: Project): string {
   border-bottom: var(--rule) solid var(--ink);
 }
 
-.work__line {
-  cursor: pointer;
-}
-
-@media (hover: hover) {
-  /* Paper and ink trade places, and the redacted cell inside flips with them. */
-  .work__line:hover {
-    --paper: var(--color-ink);
-    --ink: var(--color-paper);
-    --quiet: var(--color-quiet-inverse);
-
-    background: var(--paper);
-    color: var(--ink);
-  }
-}
-
 .work__client {
   display: flex;
   flex-direction: column;
@@ -136,35 +120,6 @@ function clientLabel({ client }: Project): string {
 
 .work__stack {
   grid-column: stack;
-}
-
-.work__toggle {
-  position: relative;
-  grid-column: toggle;
-  align-self: center;
-  justify-self: end;
-  width: 2rem;
-  height: 2rem;
-}
-
-/* A plus drawn from two bars; the upright one goes when the row is open. */
-.work__toggle::before,
-.work__toggle::after {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: 0.875rem;
-  height: var(--rule);
-  background: var(--ink);
-  content: '';
-  translate: -50% -50%;
-}
-
-.work__toggle::after {
-  rotate: 90deg;
-}
-
-.work__toggle[aria-expanded='true']::after {
-  display: none;
 }
 
 .work__details {

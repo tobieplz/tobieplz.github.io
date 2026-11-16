@@ -193,6 +193,57 @@
     line-height: 1.4;
   }
 
+  /*
+   * A row that opens something when pressed. Under the pointer, paper and ink
+   * trade places, and a redacted cell inside flips with them.
+   */
+  .index__row--action {
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .index__row--action:hover {
+      --paper: var(--color-ink);
+      --ink: var(--color-paper);
+      --quiet: var(--color-quiet-inverse);
+
+      background: var(--paper);
+      color: var(--ink);
+    }
+  }
+
+  /*
+   * The button at the end of such a row. A plus drawn from two bars; the
+   * upright one goes when what the row opens is open.
+   */
+  .index__toggle {
+    position: relative;
+    grid-column: toggle;
+    align-self: center;
+    justify-self: end;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .index__toggle::before,
+  .index__toggle::after {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 0.875rem;
+    height: var(--rule);
+    background: var(--ink);
+    content: '';
+    translate: -50% -50%;
+  }
+
+  .index__toggle::after {
+    rotate: 90deg;
+  }
+
+  .index__toggle[aria-expanded='true']::after {
+    display: none;
+  }
+
   /* The rows of a list that has column headings over it: they keep to the columns of the index. */
   .index__list {
     display: grid;

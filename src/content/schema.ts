@@ -122,7 +122,14 @@ export interface Content {
       readonly details: (label: string) => string
       readonly projects: readonly Project[]
     }
-    readonly clients: { readonly heading: string; readonly engagements: readonly Engagement[] }
+    readonly clients: {
+      readonly heading: string
+      /** On the row that opens the list, given how many clients are in it. */
+      readonly showAll: (count: number) => string
+      /** On the same row once the list is open. */
+      readonly hide: string
+      readonly engagements: readonly Engagement[]
+    }
     readonly experience: { readonly heading: string; readonly jobs: readonly Job[] }
     readonly education: { readonly heading: string; readonly courses: readonly Course[] }
     readonly approach: { readonly heading: string; readonly principles: readonly Principle[] }
