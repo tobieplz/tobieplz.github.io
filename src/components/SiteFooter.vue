@@ -12,10 +12,10 @@ function print(): void {
 <template>
   <footer class="footer label">
     <ul class="footer__actions">
-      <li v-if="site.repository">
+      <li v-if="site.repository" class="row-baseline">
         <a :href="site.repository">{{ footer.source }}</a>
       </li>
-      <li>
+      <li class="row-baseline">
         <button type="button" class="footer__print" @click="print">{{ footer.print }}</button>
       </li>
     </ul>
@@ -24,7 +24,7 @@ function print(): void {
 
 <style scoped>
 .footer {
-  padding: var(--space-5) var(--gutter) var(--space-7);
+  padding: var(--space-4) var(--gutter) var(--section-space);
   border-top: var(--rule-heavy) solid var(--ink);
   font-size: var(--text-xs);
   line-height: 1.6;
@@ -48,6 +48,13 @@ function print(): void {
     background: var(--ink);
     color: var(--paper);
     text-decoration-line: none;
+  }
+}
+
+/* Where a section's label stands at this width. */
+@media (width >= 72rem) {
+  .footer {
+    padding-top: calc(var(--space-4) + var(--space-3) + var(--rule));
   }
 }
 

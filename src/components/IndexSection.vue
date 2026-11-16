@@ -10,7 +10,7 @@ const headingId = useId()
 <template>
   <section class="section" :aria-labelledby="headingId">
     <header class="section__head label">
-      <span class="section__number" aria-hidden="true">{{ number }}</span>
+      <span class="section__number row-baseline" aria-hidden="true">{{ number }}</span>
       <h2 :id="headingId" class="section__heading">{{ heading }}</h2>
       <span v-if="count !== undefined" class="section__count" aria-hidden="true">
         ({{ String(count).padStart(2, '0') }})
@@ -27,7 +27,7 @@ const headingId = useId()
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
   gap: var(--space-4) var(--index-gap);
-  padding-block: var(--space-4) var(--space-8);
+  padding-block: var(--space-4) var(--section-space);
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
@@ -35,8 +35,8 @@ const headingId = useId()
   display: flex;
   gap: var(--space-3);
   align-items: baseline;
-  /* Lines the label up with the first row of the index beside it. */
-  padding-top: var(--space-3);
+  /* As far down as the text of the first row beside it: below that row's rule and its padding. */
+  padding-top: calc(var(--space-3) + var(--rule));
   font-weight: 800;
 }
 
@@ -52,7 +52,6 @@ const headingId = useId()
 @media (width < 72rem) {
   .section {
     grid-template-columns: minmax(0, 1fr);
-    padding-bottom: var(--space-7);
   }
 
   .section__head {

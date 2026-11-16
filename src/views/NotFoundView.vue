@@ -26,7 +26,7 @@ usePageHead('notFound')
 .missing {
   display: grid;
   gap: var(--space-4);
-  padding-block: var(--space-5) var(--space-8);
+  padding-block: var(--space-5) var(--section-space);
   border-top: var(--rule-heavy) solid var(--ink);
 }
 

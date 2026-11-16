@@ -80,7 +80,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   </div>
 
   <IndexSection number="01" :heading="index.about.heading">
-    <div class="about">
+    <div class="about index">
       <img
         class="about__portrait"
         :src="portrait"
@@ -95,7 +95,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
           <dd>{{ fact.value }}</dd>
         </div>
       </dl>
-      <div class="about__bio">
+      <div class="about__bio prose">
         <p v-for="(paragraph, position) in index.about.bio" :key="position">
           <RichText :text="paragraph" />
         </p>
@@ -143,7 +143,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 <style scoped>
 .intro {
-  padding-block: var(--space-7);
+  padding-block: var(--section-space);
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
@@ -155,26 +155,25 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   letter-spacing: -0.02em;
 }
 
-/* The photo with the facts under it, and the text beside them. */
+/*
+ * The photo, the facts and the text stand on the columns of the indexes below
+ * them (the block is an `index` itself): the photo where the numbers and years
+ * are, the facts where the names are, and the text where the descriptions are.
+ */
 .about {
-  display: grid;
-  grid-template:
-    'portrait bio' auto
-    'facts bio' 1fr
-    / 14rem minmax(0, 1fr);
-  gap: var(--space-4) var(--space-7);
+  row-gap: var(--space-4);
   align-items: start;
 }
 
 .about__portrait {
-  grid-area: portrait;
+  grid-column: no / who;
   width: 100%;
   border: var(--rule) solid var(--ink);
 }
 
 .about__facts {
   display: grid;
-  grid-area: facts;
+  grid-column: who / role;
   gap: var(--space-3);
   margin: 0;
 }
@@ -194,10 +193,12 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 }
 
 .about__bio {
-  display: grid;
-  grid-area: bio;
-  gap: var(--space-4);
-  max-width: var(--measure);
+  grid-column: role / end;
+}
+
+/* Every other list ends with a rule, so this one does too. */
+.index__row:last-child {
+  border-bottom: var(--rule) solid var(--ink);
 }
 
 .contact__lead {
@@ -219,9 +220,9 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     border-top: 0;
   }
 
-  /* Beside its section label, the photo starts level with the label's text. */
+  /* Beside its section label, the block starts where the text of a first row would. */
   .about {
-    padding-top: var(--space-3);
+    padding-top: calc(var(--space-3) + var(--rule));
   }
 }
 
@@ -240,14 +241,22 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   }
 }
 
-/* On a phone the photo and the facts share a line, and the text gets the full width. */
-@media screen and (width < 40rem) {
+/* Where the index is stacked, the photo and the facts share a line and the text gets the full width. */
+@media screen and (width < 56rem) {
   .about {
-    grid-template:
-      'portrait facts' auto
-      'bio bio' auto
-      / minmax(0, 2fr) minmax(0, 3fr);
-    column-gap: var(--space-4);
+    grid-template-columns: minmax(0, min(14rem, 40%)) minmax(0, 1fr);
+  }
+
+  .about__portrait {
+    grid-column: 1;
+  }
+
+  .about__facts {
+    grid-column: 2;
+  }
+
+  .about__bio {
+    grid-column: 1 / -1;
   }
 }
 
@@ -260,23 +269,24 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     max-width: 44ch;
   }
 
-  /* A smaller photo: on paper it is a detail, and the text beside it is what gets read. */
+  /* On paper the facts go under a smaller photo, which leaves the text a wider column. */
   .about {
-    grid-template-columns: 11rem minmax(0, 1fr);
+    grid-template: auto 1fr / 11rem minmax(0, 1fr);
     gap: var(--space-3) var(--space-5);
   }
 
   .about__portrait {
+    grid-area: 1 / 1;
     width: 6rem;
   }
 
   .about__facts {
+    grid-area: 2 / 1;
     gap: var(--space-2);
   }
 
   .about__bio {
-    gap: var(--space-2);
-    line-height: 1.42;
+    grid-area: 1 / 2 / span 2;
   }
 
   .contact__lead {

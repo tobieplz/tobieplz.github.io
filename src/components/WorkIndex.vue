@@ -39,7 +39,7 @@ function detailsLabel(client: ClientSlot): string {
 <template>
   <div class="index">
     <div class="index__row work__head" aria-hidden="true">
-      <span class="index__no">{{ columns.number }}</span>
+      <span class="index__no row-baseline">{{ columns.number }}</span>
       <span class="index__when">{{ columns.years }}</span>
       <span class="work__client">{{ columns.client }}</span>
       <span class="work__role">{{ columns.role }}</span>
@@ -77,7 +77,7 @@ function detailsLabel(client: ClientSlot): string {
 
         <div
           :id="`${baseId}-${project.client}`"
-          class="work__details"
+          class="work__details prose"
           :hidden="!open.has(project.client)"
         >
           <p v-for="(paragraph, index) in project.story" :key="index">
@@ -175,15 +175,14 @@ function detailsLabel(client: ClientSlot): string {
 
 .work__details {
   grid-column: who / end;
-  max-width: var(--measure);
   padding-block: var(--space-2) var(--space-6);
-  font-family: var(--font-sans);
-  font-size: var(--text-md);
-  line-height: 1.55;
 }
 
-.work__details p + p {
-  margin-top: var(--space-3);
+/* Beside the section label, the column headings stand where the text of a first row would. */
+@media (width >= 72rem) {
+  .work__head {
+    padding-top: calc(var(--space-3) + var(--rule));
+  }
 }
 
 /* Without JavaScript the rows cannot be opened, so show every write-up. */
@@ -263,10 +262,6 @@ function detailsLabel(client: ClientSlot): string {
     line-height: 1.42;
     orphans: 2;
     widows: 2;
-  }
-
-  .work__details p + p {
-    margin-top: var(--space-2);
   }
 }
 </style>

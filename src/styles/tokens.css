@@ -43,6 +43,9 @@
   --rule-heavy: 6px;
   --measure: 62ch;
 
+  /* The space left under every block before the next heavy rule, and on both sides of the intro. */
+  --section-space: var(--space-7);
+
   /* Every index on the site uses this one column template, so they all line up. */
   --index-columns: [no] 3ch [when] 13ch [who] minmax(0, 1.25fr) [role] minmax(0, 1fr) [stack]
     minmax(0, 1fr) [toggle] 2rem [end];
@@ -55,6 +58,13 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
+}
+
+/* A wide screen has room for more air between the blocks. */
+@media (width >= 72rem) {
+  :root {
+    --section-space: var(--space-8);
+  }
 }
 
 /* On a narrow screen the middle columns collapse into one and the cells stack. */

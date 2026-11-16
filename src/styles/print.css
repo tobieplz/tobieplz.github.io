@@ -33,4 +33,12 @@
     padding-block: var(--space-1);
     break-inside: avoid;
   }
+
+  .prose {
+    line-height: 1.42;
+  }
+
+  .prose > p + p {
+    margin-top: var(--space-2);
+  }
 }
