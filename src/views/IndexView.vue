@@ -247,7 +247,6 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 /* These headings follow the lead, not the section label, so they have nothing to line up with. */
 .contact__head {
   padding-top: 0;
-  border-top: 0;
 }
 
 .contact__lead {
@@ -271,7 +270,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
   /* Beside its section label, the block starts where the text of a first row would. */
   .about {
-    padding-top: calc(var(--space-3) + var(--rule));
+    padding-top: var(--label-offset);
   }
 }
 

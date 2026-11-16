@@ -214,14 +214,17 @@
   }
 
   /*
-   * Beside a section label, the headings start as far down as the label does:
-   * under a rule and its padding, like the text of any row. Under a section's
-   * heavy rule that rule is left out. A section without one sets --head-rule.
+   * Beside a section label, the headings start as far down as the label does,
+   * and are trimmed the way it is. The section sets both.
    */
   @media (width >= 72rem) {
     .index__head {
-      padding-top: var(--space-3);
-      border-top: var(--rule) solid var(--head-rule, transparent);
+      padding-top: var(--label-offset, 0);
+    }
+
+    .index__head > * {
+      text-box-trim: var(--label-trim, none);
+      text-box-edge: cap alphabetic;
     }
   }
 

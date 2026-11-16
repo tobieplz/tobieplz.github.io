@@ -28,6 +28,12 @@ const headingId = useId()
 
 <style scoped>
 .section {
+  /*
+   * How far below the top of the section's content its label starts, and the
+   * first line of text beside it: as far as the text of a row is below its rule.
+   */
+  --label-offset: calc(var(--space-3) + var(--rule));
+
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
   gap: var(--space-4) var(--index-gap);
@@ -36,24 +42,40 @@ const headingId = useId()
 }
 
 /*
- * No heavy rule to start under, so the column headings inside draw a thin one
- * of their own. And no space above it either: the space under the section
- * before is the whole gap, the same as the one that leads up to a heavy rule.
+ * No heavy rule to start under, and no space above either: the space under
+ * the section before is the whole gap, the same as the one that leads up to a
+ * heavy rule. So the label and the headings beside it start at the very top.
  */
 .section--joined {
-  --head-rule: var(--ink);
+  --label-offset: 0px;
 
   padding-top: 0;
   border-top: 0;
+}
+
+/*
+ * A line of text has room above its letters. Where the gap ends at a rule
+ * that does not show, but here it ends at letters, so that room is cut off
+ * the label, and off the headings beside it, to keep the gap the same size.
+ * Print has its own, tighter spacing.
+ */
+@media screen {
+  .section--joined {
+    --label-trim: trim-start;
+  }
 }
 
 .section__head {
   display: flex;
   gap: var(--space-3);
   align-items: baseline;
-  /* As far down as the text of the first row beside it: below that row's rule and its padding. */
-  padding-top: calc(var(--space-3) + var(--rule));
+  padding-top: var(--label-offset);
   font-weight: 800;
+}
+
+.section__head > * {
+  text-box-trim: var(--label-trim, none);
+  text-box-edge: cap alphabetic;
 }
 
 .section__heading {
