@@ -1,5 +1,7 @@
 import { onScopeDispose, ref, type Ref } from 'vue'
 
+import { prefersReducedMotion } from './motion'
+
 const GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&/+=?'
 const FLASH_MS = 130
 const CHURN_INTERVAL_MS = 70
@@ -81,8 +83,4 @@ export function useScramble(): Scramble {
 /** Random glyphs with the spaces of `shape` kept, so the word lengths stay recognisable. */
 function noise(shape: string): string {
   return shape.replace(/\S/g, () => GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length)))
-}
-
-function prefersReducedMotion(): boolean {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }

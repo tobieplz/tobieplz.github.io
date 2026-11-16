@@ -133,18 +133,8 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <WorkIndex :projects="index.work.projects" />
   </IndexSection>
 
-  <IndexSection
-    number="03"
-    :heading="index.clients.heading"
-    :count="clientRows.length"
-    joined
-    collapsible
-  >
-    <PlainIndex
-      :columns="clientColumns"
-      :rows="clientRows"
-      :summary="index.clients.summary(clientRows.length)"
-    />
+  <IndexSection number="03" :heading="index.clients.heading" :count="clientRows.length" joined>
+    <PlainIndex :columns="clientColumns" :rows="clientRows" :more="index.clients.more" />
   </IndexSection>
 
   <IndexSection number="04" :heading="index.experience.heading" :count="jobRows.length" joined>

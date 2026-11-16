@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { defineComponent, h, ref } from 'vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
-import { provideDisclosure, type Disclosure } from '../disclosure'
+import { STEP_MS } from '@/composables/motion'
 import PlainIndex from '../PlainIndex.vue'
 import type { PlainColumns, PlainRow } from '../types'
 
@@ -12,21 +12,36 @@ const rows: PlainRow[] = [
   { no: '02', when: '', who: ['Another Company'], what: 'Designer' },
   { no: '03', when: '2019', who: ['A Third Company'], what: 'Developer' },
 ]
+/** Three more rows than a list that folds shows while it is closed. */
+const manyRows: PlainRow[] = [
+  ...rows,
+  { no: '04', when: '2017', who: ['A Fourth Company'], what: 'Developer' },
+  { no: '05', when: '2015', who: ['A Fifth Company'], what: 'Developer' },
+  { no: '06', when: '2013', who: ['A Sixth Company'], what: 'Intern' },
+]
+const more = (count: number) => `${count} more employers`
 
-/** Mounts the list inside a section that can be closed, the way the page does. */
-function mountInSection(startOpen: boolean) {
-  const open = ref(startOpen)
-  const toggle = vi.fn<Disclosure['toggle']>(() => {
-    open.value = !open.value
-  })
-  const Section = defineComponent({
-    setup() {
-      provideDisclosure({ open, toggle })
-      return () => h(PlainIndex, { columns, rows, summary: '3 employers' })
-    },
-  })
+// jsdom lays nothing out, so it cannot scroll either.
+const scrollBy = vi.fn<(options: ScrollToOptions) => void>()
 
-  return { wrapper: mount(Section), toggle }
+/** jsdom has no matchMedia, so the visitor's wish for less motion is answered here. */
+function preferReducedMotion(reduce: boolean): void {
+  window.matchMedia = vi
+    .fn<typeof window.matchMedia>()
+    .mockReturnValue({ matches: reduce } as MediaQueryList)
+}
+
+beforeEach(() => {
+  scrollBy.mockClear()
+  window.scrollBy = scrollBy as typeof window.scrollBy
+  preferReducedMotion(false)
+})
+
+/** Makes the button report these distances from the top of the screen, one per measurement. */
+function placeButton(button: Element, ...tops: number[]): void {
+  const measure = vi.fn<Element['getBoundingClientRect']>()
+  for (const top of tops) measure.mockReturnValueOnce({ top, bottom: top + 32 } as DOMRect)
+  button.getBoundingClientRect = measure
 }
 
 describe('PlainIndex', () => {
@@ -71,52 +86,148 @@ describe('PlainIndex', () => {
     expect(wrapper.findAll('.index__who--from-when')).toHaveLength(2)
   })
 
-  it('shows all its rows when the section around it cannot be closed', () => {
-    const wrapper = mount(PlainIndex, { props: { columns, rows } })
+  it('shows every row, with no button, unless it folds', () => {
+    const wrapper = mount(PlainIndex, { props: { columns, rows: manyRows } })
 
-    expect(wrapper.find('.index__folded').exists()).toBe(false)
-    expect(wrapper.get('.index__list').attributes('hidden')).toBeUndefined()
+    expect(wrapper.find('button').exists()).toBe(false)
+    expect(wrapper.findAll('.index__list > li[hidden]')).toHaveLength(0)
   })
 
-  describe('in a section that is closed', () => {
-    it('shows one row in place of its rows: the numbers it covers and what is in it', () => {
-      const { wrapper } = mountInSection(false)
-      const folded = wrapper.get('.index__folded')
+  it('does not fold when it has no more rows than it would show closed', () => {
+    const wrapper = mount(PlainIndex, { props: { columns, rows, more } })
 
-      expect(wrapper.find('.index__head').exists()).toBe(true)
-      expect(folded.get('.index__folded-range').text()).toBe('01–03')
-      expect(folded.get('.index__folded-summary').text()).toBe('3 employers')
-      expect(wrapper.get('.index__list').attributes('hidden')).toBeDefined()
-    })
-
-    it('keeps the rows in the page', () => {
-      const { wrapper } = mountInSection(false)
-
-      expect(wrapper.findAll('.index__list > li')).toHaveLength(3)
-    })
-
-    it('leaves that row to the pointer, since the heading of the section is the button', () => {
-      const folded = mountInSection(false).wrapper.get('.index__folded')
-
-      expect(folded.attributes('aria-hidden')).toBe('true')
-      expect(folded.find('button').exists()).toBe(false)
-    })
-
-    it('opens the section when that row is pressed, and is then an ordinary list', async () => {
-      const { wrapper, toggle } = mountInSection(false)
-
-      await wrapper.get('.index__folded').trigger('click')
-
-      expect(toggle).toHaveBeenCalledOnce()
-      expect(wrapper.find('.index__folded').exists()).toBe(false)
-      expect(wrapper.get('.index__list').attributes('hidden')).toBeUndefined()
-    })
+    expect(wrapper.find('button').exists()).toBe(false)
+    expect(wrapper.findAll('.index__list > li[hidden]')).toHaveLength(0)
+    expect(wrapper.get('.index').classes()).not.toContain('index--folds')
   })
 
-  it('is an ordinary list in a section that is open', () => {
-    const { wrapper } = mountInSection(true)
+  describe('when it folds', () => {
+    const mountFolded = () => mount(PlainIndex, { props: { columns, rows: manyRows, more } })
+    /** The numbers of the rows that show. */
+    const showing = (wrapper: ReturnType<typeof mountFolded>) =>
+      wrapper.findAll('.index__list > li:not([hidden]) > .index__no').map((no) => no.text())
 
-    expect(wrapper.find('.index__folded').exists()).toBe(false)
-    expect(wrapper.get('.index__list').attributes('hidden')).toBeUndefined()
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('starts with its first three rows, and a button that says how many more there are', () => {
+      const wrapper = mountFolded()
+      const button = wrapper.get('button')
+
+      expect(showing(wrapper)).toEqual(['01', '02', '03'])
+      expect(button.text()).toBe('3')
+      expect(button.attributes('aria-label')).toBe('3 more employers')
+      expect(button.attributes('aria-expanded')).toBe('false')
+      expect(button.attributes('aria-controls')).toBe(wrapper.get('.index__list').attributes('id'))
+    })
+
+    it('keeps the rows that are folded away in the page', () => {
+      expect(mountFolded().findAll('.index__list > li')).toHaveLength(6)
+    })
+
+    it('has the button after the rows, so that it is under the last one that shows', () => {
+      const children = [...mountFolded().get('.index').element.children]
+
+      expect(children.map((child) => child.className.split(' ').pop())).toEqual([
+        'index__head',
+        'index__list',
+        'index__fold',
+      ])
+    })
+
+    it('brings out the rest a row at a time when it is opened', async () => {
+      const wrapper = mountFolded()
+      const button = wrapper.get('button')
+
+      await button.trigger('click')
+      expect(button.attributes('aria-expanded')).toBe('true')
+      expect(showing(wrapper)).toEqual(['01', '02', '03', '04'])
+
+      vi.advanceTimersByTime(STEP_MS)
+      await nextTick()
+      expect(showing(wrapper)).toEqual(['01', '02', '03', '04', '05'])
+
+      vi.advanceTimersByTime(STEP_MS)
+      await nextTick()
+      expect(showing(wrapper)).toEqual(['01', '02', '03', '04', '05', '06'])
+    })
+
+    it('takes them away again from the last one up when it is closed', async () => {
+      const wrapper = mountFolded()
+      const button = wrapper.get('button')
+      await button.trigger('click')
+      vi.runAllTimers()
+      await nextTick()
+
+      await button.trigger('click')
+      expect(button.attributes('aria-expanded')).toBe('false')
+      expect(showing(wrapper)).toEqual(['01', '02', '03', '04', '05'])
+
+      vi.runAllTimers()
+      await nextTick()
+      expect(showing(wrapper)).toEqual(['01', '02', '03'])
+    })
+
+    it('leaves the page where it is while it opens', async () => {
+      const wrapper = mountFolded()
+
+      await wrapper.get('button').trigger('click')
+      vi.runAllTimers()
+      await nextTick()
+
+      expect(scrollBy).not.toHaveBeenCalled()
+    })
+
+    it('scrolls the page by as much as the button moves, each time a row goes', async () => {
+      const wrapper = mountFolded()
+      const button = wrapper.get('button')
+      await button.trigger('click')
+      vi.runAllTimers()
+      await nextTick()
+
+      // Where it is when it is pressed, and then where each row that goes leaves it.
+      placeButton(button.element, 700, 650, 640, 700)
+      await button.trigger('click')
+      vi.advanceTimersByTime(STEP_MS)
+      await nextTick()
+      vi.advanceTimersByTime(STEP_MS)
+      await nextTick()
+
+      // The third row left it where it was held, so the page stayed where it was.
+      expect(scrollBy.mock.calls).toEqual([
+        [{ top: -50, behavior: 'instant' }],
+        [{ top: -60, behavior: 'instant' }],
+      ])
+    })
+
+    it('leaves the page alone when the button is off screen', async () => {
+      const wrapper = mountFolded()
+      const button = wrapper.get('button')
+      await button.trigger('click')
+      vi.runAllTimers()
+      await nextTick()
+
+      placeButton(button.element, window.innerHeight + 200)
+      await button.trigger('click')
+      vi.runAllTimers()
+      await nextTick()
+
+      expect(showing(wrapper)).toEqual(['01', '02', '03'])
+      expect(scrollBy).not.toHaveBeenCalled()
+    })
+
+    it('opens in one go when the visitor prefers reduced motion', async () => {
+      preferReducedMotion(true)
+      const wrapper = mountFolded()
+
+      await wrapper.get('button').trigger('click')
+
+      expect(showing(wrapper)).toEqual(['01', '02', '03', '04', '05', '06'])
+    })
   })
 })

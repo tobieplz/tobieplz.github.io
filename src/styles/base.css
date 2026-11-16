@@ -217,6 +217,8 @@
    * upright one goes when what the row opens is open.
    */
   .index__toggle {
+    --sign: 0.875rem;
+
     position: relative;
     grid-column: toggle;
     align-self: center;
@@ -229,7 +231,7 @@
   .index__toggle::after {
     position: absolute;
     inset: 50% auto auto 50%;
-    width: 0.875rem;
+    width: var(--sign);
     height: var(--rule);
     background: var(--ink);
     content: '';

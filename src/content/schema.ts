@@ -124,8 +124,8 @@ export interface Content {
     }
     readonly clients: {
       readonly heading: string
-      /** What the list holds, given how many: shown on its one row while it is closed. */
-      readonly summary: (count: number) => string
+      /** Accessible name of the button that shows the rest of the list, given how many rows that is. */
+      readonly more: (count: number) => string
       readonly engagements: readonly Engagement[]
     }
     readonly experience: { readonly heading: string; readonly jobs: readonly Job[] }

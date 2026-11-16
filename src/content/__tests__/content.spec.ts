@@ -75,6 +75,12 @@ describe('the two languages', () => {
 
     expect(facts(sv)).toEqual(facts(en))
   })
+
+  it('name the button that shows more clients with the number that is on it', () => {
+    // Someone who talks to their device can only say what they see.
+    expect(en.index.clients.more(10)).toContain('10')
+    expect(sv.index.clients.more(10)).toContain('10')
+  })
 })
 
 describe('text', () => {
