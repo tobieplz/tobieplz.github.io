@@ -1,5 +1,5 @@
 /**
- * Prepares the portrait on the About page from a photo.
+ * Prepares the portrait from a photo.
  *
  *   pnpm portrait                       reads assets-src/portrait.png
  *   pnpm portrait path/to/photo.jpg     reads another photo instead

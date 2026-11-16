@@ -11,7 +11,6 @@ function print(): void {
 
 <template>
   <footer class="footer label">
-    <p class="footer__colophon">{{ footer.colophon }}</p>
     <ul class="footer__actions">
       <li v-if="site.repository">
         <a :href="site.repository">{{ footer.source }}</a>
@@ -25,26 +24,16 @@ function print(): void {
 
 <style scoped>
 .footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4) var(--space-7);
-  justify-content: space-between;
   padding: var(--space-5) var(--gutter) var(--space-7);
   border-top: var(--rule-heavy) solid var(--ink);
-  color: var(--quiet);
   font-size: var(--text-xs);
   line-height: 1.6;
 }
 
-.footer__colophon {
-  max-width: 68ch;
-}
-
 .footer__actions {
   display: flex;
-  gap: var(--space-5);
-  color: var(--ink);
-  white-space: nowrap;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
 }
 
 .footer__print {
@@ -62,8 +51,9 @@ function print(): void {
   }
 }
 
+/* Nothing in it is of use on paper. */
 @media print {
-  .footer__actions {
+  .footer {
     display: none;
   }
 }

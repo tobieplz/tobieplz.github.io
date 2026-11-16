@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 
 import { usePageHead } from '@/composables/usePageHead'
 import { useContent } from '@/content/context'
-import { routeName } from '@/paths'
+import { PATHS } from '@/paths'
 
 const content = useContent()
 const { notFound } = content
@@ -17,9 +17,7 @@ usePageHead('notFound')
     <h1 class="missing__heading">{{ notFound.heading }}</h1>
     <p>{{ notFound.body }}</p>
     <p class="label">
-      <RouterLink :to="{ name: routeName(content.locale, 'index') }">{{
-        notFound.back
-      }}</RouterLink>
+      <RouterLink :to="PATHS[content.locale]">{{ notFound.back }}</RouterLink>
     </p>
   </article>
 </template>

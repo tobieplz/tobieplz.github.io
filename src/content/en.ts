@@ -12,11 +12,6 @@ export const content: Content = {
       description:
         'Senior product engineer with 13+ years across frontend, design and AI. Selected work, clients and experience.',
     },
-    about: {
-      title: 'About · Tobias Sjösten',
-      description:
-        'Who I am and how I work: frontend, design and AI, in small fast teams and on long-running projects.',
-    },
     notFound: {
       title: 'Not found · Tobias Sjösten',
       description: 'There is no page at this address.',
@@ -24,9 +19,6 @@ export const content: Content = {
   },
 
   nav: {
-    label: 'Main',
-    index: 'Index',
-    about: 'About',
     skip: 'Skip to content',
     language: 'Language',
     invert: 'Invert colours',
@@ -48,11 +40,25 @@ export const content: Content = {
   },
 
   index: {
-    intro: [
-      text`I build things for the web, and I usually design them too. Thirteen-plus years in, I have been the developer, the designer and, for a while, the head of development, for startups, agencies and some very large organisations.`,
-      text`These days AI is part of how I work, from figuring out what to build to designing and writing it. The work is listed below. The names are blacked out because clients like their privacy. If I gave you a passphrase, tap any black cell and type it in.`,
-    ],
-    more: 'More about me',
+    lead: text`I build things for the web, and I usually design them too. Thirteen-plus years in, I have been the developer, the designer and, for a while, the head of development, for startups, agencies and some very large organisations.`,
+
+    about: {
+      heading: 'About',
+      portraitAlt: 'Portrait of Tobias Sjösten',
+      facts: [
+        { label: 'Role', value: 'Senior Product Engineer' },
+        { label: 'Since', value: '2013' },
+        { label: 'Focus', value: 'Frontend, design, AI' },
+        { label: 'Clients', value: '20+, from startups to large organisations' },
+        { label: 'Languages', value: 'Swedish, English' },
+      ],
+      bio: [
+        text`Hi, I’m Tobias. I started out in 2013 making iOS apps and websites, moved into design engineering, ran development for a fintech product, and have spent the last few years as a senior frontend consultant. Along the way I have worked in Vue and React, in CMSs and e-commerce platforms, and in Figma about as much as in the editor.`,
+        text`I like being early on new tools. Lately that means AI, which is now part of everything I do: working out what to build, sketching and designing it, and writing the code.`,
+        text`I’m happy in a small team where things move quickly, and just as happy on the long haul in a big project. Give me a problem and some trust and I’ll take it from idea to shipped, or lead the team that does.`,
+        text`The work is listed below. The names are blacked out because clients like their privacy. If I gave you a passphrase, tap any black cell and type it in.`,
+      ],
+    },
 
     columns: {
       number: 'No.',
@@ -202,6 +208,24 @@ export const content: Content = {
       ],
     },
 
+    approach: {
+      heading: 'How I work',
+      principles: [
+        {
+          title: 'Design and code in one head',
+          body: 'I design in Figma and build in the browser, so nothing gets lost on the way from one to the other.',
+        },
+        {
+          title: 'AI in the loop',
+          body: 'I use AI as an accelerator through the whole cycle: requirements, concepts, design and code.',
+        },
+        {
+          title: 'Small team or big ship',
+          body: 'Quick, close collaboration in a small team, or steady long-term work in a large one. I have done plenty of both.',
+        },
+      ],
+    },
+
     education: {
       heading: 'Education',
       courses: [
@@ -220,45 +244,6 @@ export const content: Content = {
     },
   },
 
-  about: {
-    heading: 'About',
-    portraitAlt: 'Portrait of Tobias Sjösten',
-    bio: [
-      text`Hi, I’m Tobias. I build things for the web, and I usually design them too.`,
-      text`I started out in 2013 making iOS apps and websites, moved into design engineering, ran development for a fintech product, and have spent the last few years as a senior frontend consultant. Along the way I have worked in Vue and React, in CMSs and e-commerce platforms, and in Figma about as much as in the editor.`,
-      text`I like being early on new tools. Lately that means AI, which is now part of everything I do: working out what to build, sketching and designing it, and writing the code.`,
-      text`I’m happy in a small team where things move quickly, and just as happy on the long haul in a big project. Give me a problem and some trust and I’ll take it from idea to shipped, or lead the team that does.`,
-    ],
-    facts: {
-      heading: 'In short',
-      rows: [
-        { label: 'Role', value: 'Senior Product Engineer' },
-        { label: 'Since', value: '2013' },
-        { label: 'Focus', value: 'Frontend, design, AI' },
-        { label: 'Clients', value: '20+, from startups to large organisations' },
-        { label: 'Languages', value: 'Swedish, English' },
-      ],
-    },
-    approach: {
-      heading: 'How I work',
-      principles: [
-        {
-          title: 'Design and code in one head',
-          body: 'I design in Figma and build in the browser, so nothing gets lost on the way from one to the other.',
-        },
-        {
-          title: 'AI in the loop',
-          body: 'I use AI as an accelerator through the whole cycle: requirements, concepts, design and code.',
-        },
-        {
-          title: 'Small team or big ship',
-          body: 'Quick, close collaboration in a small team, or steady long-term work in a large one. I have done plenty of both.',
-        },
-      ],
-    },
-    back: 'See the work',
-  },
-
   notFound: {
     heading: 'Nothing filed here',
     body: 'There is no page at this address.',
@@ -266,8 +251,6 @@ export const content: Content = {
   },
 
   footer: {
-    colophon:
-      'Built with Vue and Vite, prerendered to plain HTML. No trackers, no cookies. The company names are sealed with AES-256-GCM: the source is public, the names are not.',
     source: 'Source',
     print: 'Print or save as PDF',
   },

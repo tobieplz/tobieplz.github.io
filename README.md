@@ -1,6 +1,6 @@
 # Tobias Sjösten: portfolio
 
-A two-page CV and portfolio in English and Swedish, prerendered to static HTML and hosted on GitHub Pages: <https://tobieplz.github.io/>.
+A one-page CV and portfolio in English and Swedish, prerendered to static HTML and hosted on GitHub Pages: <https://tobieplz.github.io/>.
 
 The client and employer names are confidential, and the source is public. So every company name on the site is a black cell until someone types the passphrase into one of them. Then the page decrypts in place.
 
@@ -59,7 +59,7 @@ pnpm install
 | `pnpm seal`         | Encrypts `private/names.json` into `src/vault/sealed.json`           |
 | `pnpm unseal`       | Recreates `private/names.json` from the sealed file                  |
 | `pnpm check:leaks`  | Fails if a private name is in a public file                          |
-| `pnpm portrait`     | Prepares the About page photo from `assets-src/portrait.png`         |
+| `pnpm portrait`     | Prepares the portrait from `assets-src/portrait.png`                 |
 | `pnpm share-image`  | Renders `public/og.png` from `assets-src/share-image.html`           |
 
 ## Changing things
@@ -92,12 +92,12 @@ Every push to `main` then runs `.github/workflows/deploy.yml`, which lints, test
 ```
 src/
   main.ts          app entry, built once for prerendering and once for the browser
-  routes.ts        the route table: a root per language, pages below it
-  paths.ts         where each page lives
+  routes.ts        the route table: a root per language, the page below it
+  paths.ts         where the page lives in each language
   content/         all copy, plus the schema both languages implement
   vault/           encryption, the slot ids, and the vault's state
   components/      RedactedName is the black cell; the rest is layout
-  views/           the index, the About page, the 404 page
+  views/           the page and the 404 page
   styles/          tokens, fonts, base and print styles
 scripts/           seal, unseal, leak check, portrait, share image
 private/           the real names (gitignored)

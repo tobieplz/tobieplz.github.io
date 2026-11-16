@@ -2,7 +2,6 @@ import type { ClientSlot, EmployerSlot, NameVariant, Slot } from '@/vault/names'
 import type { ContactChannel } from './site'
 
 export type Locale = 'en' | 'sv'
-export type PageId = 'index' | 'about'
 
 /** A hidden name inside running text. */
 export interface NameRef {
@@ -67,12 +66,9 @@ export interface Content {
   readonly locale: Locale
   readonly title: string
   readonly tagline: string
-  readonly meta: Readonly<Record<PageId | 'notFound', PageMeta>>
+  readonly meta: { readonly index: PageMeta; readonly notFound: PageMeta }
 
   readonly nav: {
-    readonly label: string
-    readonly index: string
-    readonly about: string
     readonly skip: string
     readonly language: string
     readonly invert: string
@@ -94,9 +90,17 @@ export interface Content {
     readonly lock: string
   }
 
+  /** The page, top to bottom. */
   readonly index: {
-    readonly intro: readonly RichText[]
-    readonly more: string
+    /** The opening statement, set large. */
+    readonly lead: RichText
+    readonly about: {
+      readonly heading: string
+      readonly portraitAlt: string
+      readonly facts: readonly Fact[]
+      /** One entry per paragraph. */
+      readonly bio: readonly RichText[]
+    }
     readonly columns: {
       readonly number: string
       readonly years: string
@@ -113,21 +117,13 @@ export interface Content {
     readonly clients: { readonly heading: string; readonly engagements: readonly Engagement[] }
     readonly experience: { readonly heading: string; readonly jobs: readonly Job[] }
     readonly toolbox: { readonly heading: string; readonly groups: readonly SkillGroup[] }
+    readonly approach: { readonly heading: string; readonly principles: readonly Principle[] }
     readonly education: { readonly heading: string; readonly courses: readonly Course[] }
     readonly contact: {
       readonly heading: string
       readonly lead: string
       readonly channels: Readonly<Record<ContactChannel, string>>
     }
-  }
-
-  readonly about: {
-    readonly heading: string
-    readonly portraitAlt: string
-    readonly bio: readonly RichText[]
-    readonly facts: { readonly heading: string; readonly rows: readonly Fact[] }
-    readonly approach: { readonly heading: string; readonly principles: readonly Principle[] }
-    readonly back: string
   }
 
   readonly notFound: {
@@ -137,7 +133,6 @@ export interface Content {
   }
 
   readonly footer: {
-    readonly colophon: string
     readonly source: string
     readonly print: string
   }

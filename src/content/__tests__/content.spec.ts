@@ -18,8 +18,7 @@ function slotsIn(content: Content): string[] {
     ]),
     ...content.index.clients.engagements.map((engagement) => engagement.client),
     ...content.index.experience.jobs.map((job) => job.employer),
-    ...inProse(content.index.intro),
-    ...inProse(content.about.bio),
+    ...inProse([content.index.lead, ...content.index.about.bio]),
   ]
 }
 
@@ -42,6 +41,9 @@ describe('the two languages', () => {
       jobs: content.index.experience.jobs.map(({ years }) => years.replace(/\D+$/, '')),
       courses: content.index.education.courses.map(({ years, school }) => ({ years, school })),
       skillGroups: content.index.toolbox.groups.map((group) => group.skills.length),
+      bioParagraphs: content.index.about.bio.length,
+      facts: content.index.about.facts.length,
+      principles: content.index.approach.principles.length,
     })
 
     expect(facts(sv)).toEqual(facts(en))

@@ -1,47 +1,35 @@
 <script setup lang="ts">
 /**
- * Navigation and the name. On the index the name is a poster-sized <h1>; on
- * other pages it shrinks to a one-line link home and the page brings its own <h1>.
+ * The two switches and the name. On the page the name is a poster-sized <h1>;
+ * on the 404 page it shrinks to a one-line link home, and that page brings its own <h1>.
  */
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import { useContent } from '@/content/context'
 import { site } from '@/content/site'
-import { routeName } from '@/paths'
+import { NOT_FOUND_ROUTE, PATHS } from '@/paths'
 import LanguageSwitch from './LanguageSwitch.vue'
 import ThemeToggle from './ThemeToggle.vue'
 
 const content = useContent()
 const route = useRoute()
 
-const isIndex = computed(() => route.meta.page === 'index')
-const indexRoute = { name: routeName(content.locale, 'index') }
-const aboutRoute = { name: routeName(content.locale, 'about') }
+const isPoster = computed(() => route.name !== NOT_FOUND_ROUTE)
 </script>
 
 <template>
-  <header class="masthead" :class="{ 'masthead--poster': isIndex }">
-    <nav class="masthead__nav label" :aria-label="content.nav.label">
-      <ul class="masthead__links">
-        <li>
-          <RouterLink :to="indexRoute">{{ content.nav.index }}</RouterLink>
-        </li>
-        <li>
-          <RouterLink :to="aboutRoute">{{ content.nav.about }}</RouterLink>
-        </li>
-      </ul>
-      <div class="masthead__tools">
-        <LanguageSwitch />
-        <ThemeToggle />
-      </div>
-    </nav>
+  <header class="masthead" :class="{ 'masthead--poster': isPoster }">
+    <div class="masthead__tools label">
+      <LanguageSwitch />
+      <ThemeToggle />
+    </div>
 
-    <h1 v-if="isIndex" class="wordmark">
+    <h1 v-if="isPoster" class="wordmark">
       <span>{{ site.givenName }}</span> <span>{{ site.familyName }}</span>
     </h1>
     <p v-else class="wordmark">
-      <RouterLink :to="indexRoute">{{ site.name }}</RouterLink>
+      <RouterLink :to="PATHS[content.locale]">{{ site.name }}</RouterLink>
     </p>
 
     <p class="masthead__title label">
@@ -58,29 +46,11 @@ const aboutRoute = { name: routeName(content.locale, 'about') }
   container-type: inline-size;
 }
 
-.masthead__nav,
-.masthead__links,
 .masthead__tools {
   display: flex;
+  gap: var(--space-5);
   align-items: center;
-}
-
-.masthead__nav {
-  justify-content: space-between;
-  gap: var(--space-5);
-}
-
-.masthead__links {
-  gap: var(--space-5);
-}
-
-.masthead__tools {
-  gap: var(--space-5);
-}
-
-.masthead__links [aria-current='page'] {
-  font-weight: 800;
-  text-decoration-thickness: 4px;
+  justify-content: flex-end;
 }
 
 .wordmark {
@@ -145,7 +115,7 @@ const aboutRoute = { name: routeName(content.locale, 'about') }
     padding-top: 0;
   }
 
-  .masthead__nav {
+  .masthead__tools {
     display: none;
   }
 

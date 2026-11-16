@@ -1,7 +1,6 @@
 <script setup lang="ts">
-/** The CV as one numbered index. */
-import { RouterLink } from 'vue-router'
-
+/** The page: a CV as one numbered index. */
+import portrait from '@/assets/portrait.webp'
 import IndexSection from '@/components/IndexSection.vue'
 import PlainIndex from '@/components/PlainIndex.vue'
 import RichText from '@/components/RichText.vue'
@@ -11,11 +10,12 @@ import { usePageHead } from '@/composables/usePageHead'
 import { useContent } from '@/content/context'
 import { site, type ContactChannel } from '@/content/site'
 import { hidden } from '@/content/text'
-import { routeName } from '@/paths'
 import { slotNumber } from '@/vault/names'
 
-const content = useContent()
-const { index } = content
+/** `pnpm portrait` always writes a square, so these only need to state the ratio. */
+const PORTRAIT_SIZE = 480
+
+const { index } = useContent()
 
 usePageHead('index')
 
@@ -40,6 +40,12 @@ const skillRows: PlainRow[] = index.toolbox.groups.map((group, position) => ({
   no: numbered(position),
   who: [group.label],
   what: group.skills.join(' · '),
+}))
+
+const principleRows: PlainRow[] = index.approach.principles.map((principle, position) => ({
+  no: numbered(position),
+  who: [principle.title],
+  what: principle.body,
 }))
 
 const courseRows: PlainRow[] = index.education.courses.map((course, position) => ({
@@ -70,38 +76,58 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 <template>
   <div class="intro">
-    <p class="intro__lead"><RichText :text="index.intro[0] ?? []" /></p>
-    <div class="intro__rest">
-      <p v-for="(paragraph, position) in index.intro.slice(1)" :key="position">
-        <RichText :text="paragraph" />
-      </p>
-      <p class="intro__more label">
-        <RouterLink :to="{ name: routeName(content.locale, 'about') }">{{ index.more }}</RouterLink>
-      </p>
-    </div>
+    <p class="intro__lead"><RichText :text="index.lead" /></p>
   </div>
 
-  <IndexSection number="01" :heading="index.work.heading" :count="index.work.projects.length">
+  <IndexSection number="01" :heading="index.about.heading">
+    <div class="about">
+      <img
+        class="about__portrait"
+        :src="portrait"
+        :alt="index.about.portraitAlt"
+        :width="PORTRAIT_SIZE"
+        :height="PORTRAIT_SIZE"
+        decoding="async"
+      />
+      <dl class="about__facts label">
+        <div v-for="fact in index.about.facts" :key="fact.label">
+          <dt>{{ fact.label }}</dt>
+          <dd>{{ fact.value }}</dd>
+        </div>
+      </dl>
+      <div class="about__bio">
+        <p v-for="(paragraph, position) in index.about.bio" :key="position">
+          <RichText :text="paragraph" />
+        </p>
+      </div>
+    </div>
+  </IndexSection>
+
+  <IndexSection number="02" :heading="index.work.heading" :count="index.work.projects.length">
     <WorkIndex :projects="index.work.projects" />
   </IndexSection>
 
-  <IndexSection number="02" :heading="index.clients.heading" :count="clientRows.length">
+  <IndexSection number="03" :heading="index.clients.heading" :count="clientRows.length">
     <PlainIndex :rows="clientRows" />
   </IndexSection>
 
-  <IndexSection number="03" :heading="index.experience.heading" :count="jobRows.length">
+  <IndexSection number="04" :heading="index.experience.heading" :count="jobRows.length">
     <PlainIndex :rows="jobRows" />
   </IndexSection>
 
-  <IndexSection number="04" :heading="index.toolbox.heading">
+  <IndexSection number="05" :heading="index.toolbox.heading">
     <PlainIndex :rows="skillRows" />
   </IndexSection>
 
-  <IndexSection number="05" :heading="index.education.heading">
+  <IndexSection number="06" :heading="index.approach.heading">
+    <PlainIndex :rows="principleRows" />
+  </IndexSection>
+
+  <IndexSection number="07" :heading="index.education.heading">
     <PlainIndex :rows="courseRows" />
   </IndexSection>
 
-  <IndexSection v-if="channels.length > 0" number="06" :heading="index.contact.heading">
+  <IndexSection v-if="channels.length > 0" number="08" :heading="index.contact.heading">
     <p class="contact__lead">{{ index.contact.lead }}</p>
     <ul class="index" role="list" :style="{ '--address-length': addressLength }">
       <li v-for="(entry, position) in channels" :key="entry.channel" class="index__row">
@@ -117,15 +143,11 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 <style scoped>
 .intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
-  gap: var(--space-5) var(--index-gap);
   padding-block: var(--space-6) var(--space-8);
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
 .intro__lead {
-  grid-column: 1 / -1;
   max-width: 28ch;
   font-size: var(--text-xl);
   font-weight: 600;
@@ -133,9 +155,47 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   letter-spacing: -0.02em;
 }
 
-.intro__rest {
+/* The photo with the facts under it, and the text beside them. */
+.about {
   display: grid;
-  grid-column: 2;
+  grid-template:
+    'portrait bio' auto
+    'facts bio' 1fr
+    / 14rem minmax(0, 1fr);
+  gap: var(--space-4) var(--space-7);
+  align-items: start;
+}
+
+.about__portrait {
+  grid-area: portrait;
+  width: 100%;
+  border: var(--rule) solid var(--ink);
+}
+
+.about__facts {
+  display: grid;
+  grid-area: facts;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.about__facts dt {
+  color: var(--quiet);
+}
+
+.about__facts dd {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.about__bio {
+  display: grid;
+  grid-area: bio;
   gap: var(--space-4);
   max-width: var(--measure);
 }
@@ -153,13 +213,16 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   overflow-wrap: anywhere;
 }
 
+/* Beside its section label, the photo starts level with the label's text. */
+@media (width >= 72rem) {
+  .about {
+    padding-top: var(--space-3);
+  }
+}
+
 @media (width < 72rem) {
   .intro {
     padding-bottom: var(--space-7);
-  }
-
-  .intro__rest {
-    grid-column: 1 / -1;
   }
 }
 
@@ -178,6 +241,17 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
   }
 }
 
+/* On a phone the photo and the facts share a line, and the text gets the full width. */
+@media screen and (width < 40rem) {
+  .about {
+    grid-template:
+      'portrait facts' auto
+      'bio bio' auto
+      / minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--space-4);
+  }
+}
+
 @media print {
   .intro {
     padding-block: var(--space-4) var(--space-6);
@@ -187,9 +261,22 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     max-width: 44ch;
   }
 
-  /* A link to another page is no use on paper. */
-  .intro__more {
-    display: none;
+  /* A smaller photo: on paper it is a detail, and the text beside it is what gets read. */
+  .about {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .about__portrait {
+    width: 7rem;
+  }
+
+  .about__facts {
+    gap: var(--space-2);
+  }
+
+  .about__bio {
+    gap: var(--space-3);
   }
 
   .contact__lead {

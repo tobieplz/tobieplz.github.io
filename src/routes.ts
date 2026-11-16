@@ -1,51 +1,26 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-import type { Locale, PageId } from '@/content/schema'
-import { PATHS, routeName } from '@/paths'
+import { NOT_FOUND_ROUTE, PATHS } from '@/paths'
 import IndexView from '@/views/IndexView.vue'
-
-declare module 'vue-router' {
-  interface RouteMeta {
-    /** Which page this is, so the language switch can link to its counterpart. */
-    page?: PageId
-  }
-}
-
-function pages(locale: Locale): RouteRecordRaw[] {
-  return [
-    {
-      path: PATHS[locale].index,
-      name: routeName(locale, 'index'),
-      component: IndexView,
-      meta: { page: 'index' },
-    },
-    {
-      path: PATHS[locale].about,
-      name: routeName(locale, 'about'),
-      component: () => import('@/views/AboutView.vue'),
-      meta: { page: 'about' },
-    },
-  ]
-}
 
 /**
  * Each language has a root route, loaded on demand, that brings that
- * language's copy with it and provides it to the pages below.
+ * language's copy with it and provides it to the page below.
  */
 export const routes: RouteRecordRaw[] = [
   {
-    path: PATHS.sv.index,
+    path: PATHS.sv,
     component: () => import('@/locales/SwedishRoot.vue'),
-    children: pages('sv'),
+    children: [{ path: PATHS.sv, component: IndexView }],
   },
   {
-    path: PATHS.en.index,
+    path: PATHS.en,
     component: () => import('@/locales/EnglishRoot.vue'),
     children: [
-      ...pages('en'),
+      { path: PATHS.en, component: IndexView },
       {
         path: '/:unknown(.*)*',
-        name: 'not-found',
+        name: NOT_FOUND_ROUTE,
         component: () => import('@/views/NotFoundView.vue'),
       },
     ],

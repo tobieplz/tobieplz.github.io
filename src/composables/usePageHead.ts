@@ -1,17 +1,17 @@
 import { useHead } from '@unhead/vue'
 
 import { useContent } from '@/content/context'
-import type { Content, Locale, PageId } from '@/content/schema'
+import type { Content, Locale } from '@/content/schema'
 import { site } from '@/content/site'
 import { LOCALES, PATHS } from '@/paths'
 
-type Page = PageId | 'notFound'
+type Page = keyof Content['meta']
 
 const SITE_URL = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '')
 const OPEN_GRAPH_LOCALE: Readonly<Record<Locale, string>> = { en: 'en_GB', sv: 'sv_SE' }
 
 /**
- * Sets up the document head for a page.
+ * Sets up the document head for the page, or for the 404 page.
  *
  * The whole head is written into the HTML when the site is prerendered, which
  * is where crawlers and link previews read it. In the browser only the two
@@ -23,7 +23,7 @@ export function usePageHead(page: Page): void {
 
   if (import.meta.env.SSR) {
     useHead(describe(content, page))
-    if (SITE_URL && page !== 'notFound') useHead(locate(content, page, SITE_URL))
+    if (SITE_URL && page === 'index') useHead(locate(content, SITE_URL))
     return
   }
 
@@ -54,8 +54,8 @@ function describe(content: Content, page: Page) {
  * alternates, share image and structured data. A build that does not know
  * where it will be hosted leaves these out.
  */
-function locate(content: Content, page: PageId, siteUrl: string) {
-  const addressOf = (locale: Locale) => siteUrl + PATHS[locale][page]
+function locate(content: Content, siteUrl: string) {
+  const addressOf = (locale: Locale) => siteUrl + PATHS[locale]
   const address = addressOf(content.locale)
   const { linkedin, github } = site.contact
   const profiles = [linkedin, github && `https://github.com/${github}`].filter(Boolean)
@@ -86,8 +86,8 @@ function locate(content: Content, page: PageId, siteUrl: string) {
           givenName: site.givenName,
           familyName: site.familyName,
           jobTitle: content.title,
-          description: content.meta.about.description,
-          url: siteUrl + PATHS[content.locale].index,
+          description: content.meta.index.description,
+          url: address,
           ...(profiles.length > 0 && { sameAs: profiles }),
         }),
       },

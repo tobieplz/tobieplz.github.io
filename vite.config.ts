@@ -21,6 +21,10 @@ export default defineConfig(({ isPreview }) => ({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    // Keep images as files. Inlined, a small one would travel inside the JavaScript bundle.
+    assetsInlineLimit: 0,
+  },
   server: {
     fs: {
       // Vite's defaults, plus the folder holding the unencrypted names.
@@ -36,7 +40,7 @@ export default defineConfig(({ isPreview }) => ({
     },
   },
   ssgOptions: {
-    // /about/ -> about/index.html, so every URL works with and without a trailing slash.
+    // /sv/ -> sv/index.html, so the address works with and without a trailing slash.
     dirStyle: 'nested',
     // GitHub Pages looks for /404.html at the site root.
     htmlFileName: (filename) => (filename === '404/index.html' ? '404.html' : undefined),

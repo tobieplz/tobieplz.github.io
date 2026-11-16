@@ -12,11 +12,6 @@ export const content: Content = {
       description:
         'Senior product engineer med över 13 års erfarenhet av frontend, design och AI. Utvalda uppdrag, kunder och erfarenhet.',
     },
-    about: {
-      title: 'Om mig · Tobias Sjösten',
-      description:
-        'Vem jag är och hur jag jobbar: frontend, design och AI, i små snabba team och i långa projekt.',
-    },
     notFound: {
       title: 'Sidan finns inte · Tobias Sjösten',
       description: 'Det finns ingen sida på den här adressen.',
@@ -24,9 +19,6 @@ export const content: Content = {
   },
 
   nav: {
-    label: 'Huvudmeny',
-    index: 'Index',
-    about: 'Om mig',
     skip: 'Hoppa till innehållet',
     language: 'Språk',
     invert: 'Invertera färgerna',
@@ -48,11 +40,25 @@ export const content: Content = {
   },
 
   index: {
-    intro: [
-      text`Jag bygger saker för webben, och oftast designar jag dem också. Efter drygt tretton år har jag hunnit vara utvecklaren, designern och under en period utvecklingsansvarig, åt startups, byråer och några riktigt stora organisationer.`,
-      text`Numera är AI en del av hur jag jobbar, från att lista ut vad som ska byggas till att designa och skriva det. Uppdragen finns här nedanför. Namnen är överstrukna eftersom kunder uppskattar diskretion. Har du fått en lösenfras av mig, tryck på en svart ruta och skriv in den.`,
-    ],
-    more: 'Mer om mig',
+    lead: text`Jag bygger saker för webben, och oftast designar jag dem också. Efter drygt tretton år har jag hunnit vara utvecklaren, designern och under en period utvecklingsansvarig, åt startups, byråer och några riktigt stora organisationer.`,
+
+    about: {
+      heading: 'Om mig',
+      portraitAlt: 'Porträtt av Tobias Sjösten',
+      facts: [
+        { label: 'Roll', value: 'Senior Product Engineer' },
+        { label: 'Sedan', value: '2013' },
+        { label: 'Fokus', value: 'Frontend, design, AI' },
+        { label: 'Kunder', value: 'Över 20, från startups till stora organisationer' },
+        { label: 'Språk', value: 'Svenska, engelska' },
+      ],
+      bio: [
+        text`Hej, jag heter Tobias. Jag började 2013 med iOS-appar och webbplatser, gled över i design engineering, ledde utvecklingen av en fintechprodukt och har de senaste åren varit senior frontendkonsult. På vägen har jag jobbat i Vue och React, i CMS:er och e-handelsplattformar, och ungefär lika mycket i Figma som i editorn.`,
+        text`Jag gillar att vara tidigt ute med nya verktyg. På sistone betyder det AI, som numera är en del av allt jag gör: att lista ut vad som ska byggas, skissa och designa det, och skriva koden.`,
+        text`Jag trivs i ett litet team där det går undan, och lika bra i det långa loppet i ett stort projekt. Ge mig ett problem och lite förtroende så tar jag det från idé till lansering, eller leder teamet som gör det.`,
+        text`Uppdragen finns här nedanför. Namnen är överstrukna eftersom kunder uppskattar diskretion. Har du fått en lösenfras av mig, tryck på en svart ruta och skriv in den.`,
+      ],
+    },
 
     columns: {
       number: 'Nr',
@@ -202,6 +208,24 @@ export const content: Content = {
       ],
     },
 
+    approach: {
+      heading: 'Så jobbar jag',
+      principles: [
+        {
+          title: 'Design och kod i samma huvud',
+          body: 'Jag designar i Figma och bygger i webbläsaren, så inget tappas bort på vägen mellan dem.',
+        },
+        {
+          title: 'AI med i loopen',
+          body: 'Jag använder AI som en accelerator genom hela cykeln: krav, koncept, design och kod.',
+        },
+        {
+          title: 'Litet team eller stort skepp',
+          body: 'Snabbt och nära samarbete i ett litet team, eller långsiktigt arbete i ett stort. Jag har gjort mycket av båda.',
+        },
+      ],
+    },
+
     education: {
       heading: 'Utbildning',
       courses: [
@@ -220,45 +244,6 @@ export const content: Content = {
     },
   },
 
-  about: {
-    heading: 'Om mig',
-    portraitAlt: 'Porträtt av Tobias Sjösten',
-    bio: [
-      text`Hej, jag heter Tobias. Jag bygger saker för webben, och oftast designar jag dem också.`,
-      text`Jag började 2013 med iOS-appar och webbplatser, gled över i design engineering, ledde utvecklingen av en fintechprodukt och har de senaste åren varit senior frontendkonsult. På vägen har jag jobbat i Vue och React, i CMS:er och e-handelsplattformar, och ungefär lika mycket i Figma som i editorn.`,
-      text`Jag gillar att vara tidigt ute med nya verktyg. På sistone betyder det AI, som numera är en del av allt jag gör: att lista ut vad som ska byggas, skissa och designa det, och skriva koden.`,
-      text`Jag trivs i ett litet team där det går undan, och lika bra i det långa loppet i ett stort projekt. Ge mig ett problem och lite förtroende så tar jag det från idé till lansering, eller leder teamet som gör det.`,
-    ],
-    facts: {
-      heading: 'I korthet',
-      rows: [
-        { label: 'Roll', value: 'Senior Product Engineer' },
-        { label: 'Sedan', value: '2013' },
-        { label: 'Fokus', value: 'Frontend, design, AI' },
-        { label: 'Kunder', value: 'Över 20, från startups till stora organisationer' },
-        { label: 'Språk', value: 'Svenska, engelska' },
-      ],
-    },
-    approach: {
-      heading: 'Så jobbar jag',
-      principles: [
-        {
-          title: 'Design och kod i samma huvud',
-          body: 'Jag designar i Figma och bygger i webbläsaren, så inget tappas bort på vägen mellan dem.',
-        },
-        {
-          title: 'AI med i loopen',
-          body: 'Jag använder AI som en accelerator genom hela cykeln: krav, koncept, design och kod.',
-        },
-        {
-          title: 'Litet team eller stort skepp',
-          body: 'Snabbt och nära samarbete i ett litet team, eller långsiktigt arbete i ett stort. Jag har gjort mycket av båda.',
-        },
-      ],
-    },
-    back: 'Se uppdragen',
-  },
-
   notFound: {
     heading: 'Inget arkiverat här',
     body: 'Det finns ingen sida på den här adressen.',
@@ -266,8 +251,6 @@ export const content: Content = {
   },
 
   footer: {
-    colophon:
-      'Byggd med Vue och Vite, förrenderad till ren HTML. Inga spårare, inga kakor. Företagsnamnen är förseglade med AES-256-GCM: källkoden är öppen, namnen är det inte.',
     source: 'Källkod',
     print: 'Skriv ut eller spara som PDF',
   },
