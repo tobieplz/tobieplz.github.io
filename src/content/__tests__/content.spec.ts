@@ -14,7 +14,7 @@ function clientsIn(content: Content): Company[] {
   ]
 }
 
-/** The slots a locale mentions, in order: what a reader would see as black cells. */
+/** The slots a locale mentions, in order: what a reader would see as redacted cells. */
 function slotsIn(content: Content): string[] {
   const inProse = (paragraphs: readonly RichText[]) =>
     paragraphs.flat().flatMap((segment) => (typeof segment === 'string' ? [] : [segment.slot]))

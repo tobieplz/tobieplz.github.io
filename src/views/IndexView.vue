@@ -23,7 +23,7 @@ const portraitSources = `${portraitSmall} ${portraitSize.smallWidth}w, ${portrai
 /** How wide the photo is shown: beside the text from 56rem up, above it on narrower screens. */
 const PORTRAIT_SIZES = '(min-width: 72rem) 34vw, (min-width: 56rem) 43vw, min(100vw - 2rem, 24rem)'
 
-/** What a row shows for its company: a black cell, or the name when that is public. */
+/** What a row shows for its company: a redacted cell, or the name when that is public. */
 const shown = (company: Company): PlainRow['who'] =>
   typeof company === 'string' ? [hidden(company)] : [company.name]
 

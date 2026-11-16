@@ -29,7 +29,7 @@ export const content: Content = {
     hiddenName: (label) => `${label}, name hidden. Press to enter the passphrase.`,
     passphrase: 'Passphrase',
     withheld: (count) => `${count} names withheld`,
-    hint: 'Got the passphrase? Tap any black cell.',
+    hint: 'Got the passphrase? Tap any hidden name.',
     entering: 'Type the passphrase. Enter to try, Esc to cancel.',
     checking: 'Deriving key',
     denied: 'Denied. That is not the passphrase.',
@@ -55,7 +55,7 @@ export const content: Content = {
         text`Hi, I’m Tobias. I started out in 2013 making iOS apps and websites, moved into design engineering, ran development for a fintech product, and have spent the last few years as a senior frontend consultant. Along the way I have worked in Vue and React, in CMSs and e-commerce platforms, and in Figma about as much as in the editor.`,
         text`I like being early on new tools. Lately that means AI, which is now part of everything I do: working out what to build, sketching and designing it, and writing the code.`,
         text`I’m happy in a small team where things move quickly, and just as happy on the long haul in a big project. Give me a problem and some trust and I’ll take it from idea to shipped, or lead the team that does.`,
-        text`The work is listed below. The names are blacked out because clients like their privacy. If I gave you a passphrase, tap any black cell and type it in.`,
+        text`The work is listed below. Most client names are hidden because clients like their privacy. If I gave you a passphrase, tap any hidden name and type it in.`,
       ],
     },
 

@@ -29,11 +29,20 @@ const { nav } = useContent()
   padding: var(--space-2) var(--space-4);
   background: var(--accent);
   color: #fff;
-  translate: 0 -100%;
 }
 
-.skip:focus {
-  translate: 0;
+/*
+ * Out of sight until the keyboard reaches it. Clipped away, not moved off the
+ * top: its height is not a whole number of pixels, so moving it left half a
+ * pixel of it showing along the top edge on screens of ordinary density.
+ */
+.skip:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .page {

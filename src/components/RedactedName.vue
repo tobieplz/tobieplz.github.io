@@ -2,7 +2,7 @@
 /**
  * One hidden client name. It is three things in turn:
  *
- *   locked    a black cell labelled "Client 03"; a button
+ *   locked    a filled cell labelled "Client 03"; a button
  *   entering  the same cell as a text field, for typing the passphrase into
  *   unlocked  the real name, decoded out of noise the first time it appears
  */

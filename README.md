@@ -2,7 +2,7 @@
 
 A one-page CV and portfolio in English and Swedish, prerendered to static HTML and hosted on GitHub Pages: <https://tobieplz.github.io/>.
 
-Most of the client names are confidential, and the source is public. So each of those names is a black cell until someone types the passphrase into one of them. Then the page decrypts in place.
+Most of the client names are confidential, and the source is public. So each of those names is a redacted cell, black in the light theme and white in the dark one, until someone types the passphrase into one of them. Then the page decrypts in place.
 
 ## Stack
 
@@ -96,7 +96,7 @@ src/
   paths.ts         where the page lives in each language
   content/         all copy, plus the schema both languages implement
   vault/           encryption, the slot ids, and the vault's state
-  components/      RedactedName is the black cell; the rest is layout
+  components/      RedactedName is the redacted cell; the rest is layout
   views/           the page and the 404 page
   styles/          tokens, fonts, base and print styles
 scripts/           seal, unseal, leak check, portrait, share image

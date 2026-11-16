@@ -29,7 +29,7 @@ export const content: Content = {
     hiddenName: (label) => `${label}, namnet är dolt. Tryck för att ange lösenfrasen.`,
     passphrase: 'Lösenfras',
     withheld: (count) => `${count} namn dolda`,
-    hint: 'Har du lösenfrasen? Tryck på en svart ruta.',
+    hint: 'Har du lösenfrasen? Tryck på ett dolt namn.',
     entering: 'Skriv lösenfrasen. Enter för att testa, Esc för att avbryta.',
     checking: 'Härleder nyckel',
     denied: 'Nekad. Det där är inte lösenfrasen.',
@@ -55,7 +55,7 @@ export const content: Content = {
         text`Hej, jag heter Tobias. Jag började 2013 med iOS-appar och webbplatser, gled över i design engineering, ledde utvecklingen av en fintechprodukt och har de senaste åren varit senior frontendkonsult. På vägen har jag jobbat i Vue och React, i CMS:er och e-handelsplattformar, och ungefär lika mycket i Figma som i editorn.`,
         text`Jag gillar att vara tidigt ute med nya verktyg. På sistone betyder det AI, som numera är en del av allt jag gör: att lista ut vad som ska byggas, skissa och designa det, och skriva koden.`,
         text`Jag trivs i ett litet team där det går undan, och lika bra i det långa loppet i ett stort projekt. Ge mig ett problem och lite förtroende så tar jag det från idé till lansering, eller leder teamet som gör det.`,
-        text`Uppdragen finns här nedanför. Namnen är överstrukna eftersom kunder uppskattar diskretion. Har du fått en lösenfras av mig, tryck på en svart ruta och skriv in den.`,
+        text`Uppdragen finns här nedanför. De flesta kundnamnen är dolda eftersom kunder uppskattar diskretion. Har du fått en lösenfras av mig, tryck på ett dolt namn och skriv in den.`,
       ],
     },
 

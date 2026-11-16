@@ -33,7 +33,7 @@ function onLineClick(event: MouseEvent, row: number): void {
   toggle(row)
 }
 
-/** What a row shows for its client: the label of its black cell, or the name when that is public. */
+/** What a row shows for its client: the label of its redacted cell, or the name when that is public. */
 function clientLabel({ client }: Project): string {
   return typeof client === 'string' ? `${content.vault.client} ${slotNumber(client)}` : client.name
 }

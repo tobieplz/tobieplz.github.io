@@ -4,7 +4,7 @@
  * in the sealed vault.
  *
  * A slot is numbered after the row its client has on the page, which is the
- * number a reader sees on the black cell. A row whose company is named openly
+ * number a reader sees on the redacted cell. A row whose company is named openly
  * has no slot, so the numbers have gaps.
  *
  * No imports here either: the Node scripts load this file directly.
