@@ -145,7 +145,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <PlainIndex :columns="courseColumns" :rows="courseRows" />
   </IndexSection>
 
-  <IndexSection number="06" :heading="index.approach.heading">
+  <IndexSection number="06" :heading="index.approach.heading" joined>
     <PlainIndex :columns="principleColumns" :rows="principleRows" />
   </IndexSection>
 
