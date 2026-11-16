@@ -28,7 +28,8 @@ export interface Project {
 
 export interface Engagement {
   readonly client: Company
-  readonly sector?: string
+  /** The kind of company, as on a project. */
+  readonly sector: string
   readonly work: string
 }
 

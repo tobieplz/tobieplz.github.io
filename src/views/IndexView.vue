@@ -37,7 +37,7 @@ const clientColumns: PlainColumns = {
 // The numbers continue from the main table, so that every client has one of its own.
 const clientRows: PlainRow[] = index.clients.engagements.map((engagement, position) => ({
   no: numbered(index.work.projects.length + position),
-  when: engagement.sector ?? '',
+  when: engagement.sector,
   who: shown(engagement.client),
   what: engagement.work,
 }))

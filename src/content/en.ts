@@ -174,7 +174,7 @@ export const content: Content = {
       heading: 'More clients',
       more: (count) => `${count} more clients`,
       engagements: [
-        { client: { name: 'StoEr' }, work: 'Digital system' },
+        { client: { name: 'StoEr' }, sector: 'Fintech', work: 'Loan system for banks' },
         { client: 'c10', sector: 'Retail', work: 'Website' },
         { client: 'c11', sector: 'Gaming', work: 'Website' },
         { client: { name: 'Deloitte' }, sector: 'Consulting', work: 'Website' },
