@@ -43,8 +43,12 @@
   --rule-heavy: 6px;
   --measure: 62ch;
 
-  /* The space left under every section before the next heavy rule, and at the foot of the page. */
-  --section-space: var(--space-7);
+  /*
+   * The space between one section and the next: left under every section, on
+   * both sides of the intro, and at the foot of the page. 38px, and 48px on a
+   * wide screen.
+   */
+  --section-space: 2.375rem;
 
   /* Every index on the site uses this one column template, so they all line up. */
   --index-columns: [no] 3ch [when] 13ch [who] minmax(0, 1.25fr) [role] minmax(0, 1fr) [stack]
@@ -63,7 +67,7 @@
 /* A wide screen has room for more air between the blocks. */
 @media (width >= 72rem) {
   :root {
-    --section-space: var(--space-8);
+    --section-space: var(--space-7);
   }
 }
 

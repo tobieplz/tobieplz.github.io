@@ -111,7 +111,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <PlainIndex :rows="clientRows" />
   </IndexSection>
 
-  <IndexSection number="04" :heading="index.experience.heading" :count="jobRows.length">
+  <IndexSection number="04" :heading="index.experience.heading" :count="jobRows.length" joined>
     <PlainIndex :rows="jobRows" />
   </IndexSection>
 
@@ -139,8 +139,7 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 
 <style scoped>
 .intro {
-  /* 38px above and below: the intro keeps closer to its rules than the sections do. */
-  padding-block: 2.375rem;
+  padding-block: var(--section-space);
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
@@ -227,7 +226,6 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
 @media (width >= 72rem) {
   /* At this width the line in the title row above already sets the intro apart. */
   .intro {
-    padding-block: var(--space-7);
     border-top: 0;
   }
 

@@ -35,10 +35,15 @@ const headingId = useId()
   border-top: var(--rule-heavy) solid var(--ink);
 }
 
-/* No heavy rule to start under, so the list inside draws its own first line. */
+/*
+ * No heavy rule to start under, so the list inside draws its own first line.
+ * And no space above it either: the space under the section before is the
+ * whole gap, the same as the one that leads up to a heavy rule.
+ */
 .section--joined {
   --first-rule: var(--ink);
 
+  padding-top: 0;
   border-top: 0;
 }
 
