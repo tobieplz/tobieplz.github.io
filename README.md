@@ -78,7 +78,7 @@ text`Frontend developer at ${hidden('c03')}.`
 
 **Contact details.** `src/content/site.ts`. An empty value hides that row.
 
-**Photo.** `pnpm portrait path/to/photo.jpg` writes it to `src/assets/` in two sizes for the page to choose between, with the sizes noted beside them. The colours and the shape of the photo are kept.
+**Photo.** `pnpm portrait path/to/photo.jpg` writes it to `src/assets/` in two sizes for the page to choose between, with the sizes noted beside them. The colours are kept. `assets-src/portrait.trim.json` says how much of the photo to cut from each edge.
 
 ## Deploying
 
