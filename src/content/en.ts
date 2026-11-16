@@ -39,7 +39,7 @@ export const content: Content = {
   },
 
   index: {
-    lead: text`I build things for the web, and I usually design them too. Thirteen-plus years in, I have been the developer, the designer and, for a while, the head of development, for startups, agencies and some very large organisations.`,
+    lead: text`I build things for the web, and I usually design them too. 13+\u00a0years in, I have been the developer, the designer and, for a while, the head of development, for startups, agencies and some very large organisations.`,
 
     about: {
       heading: 'About',

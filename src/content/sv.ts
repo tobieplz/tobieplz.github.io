@@ -39,7 +39,7 @@ export const content: Content = {
   },
 
   index: {
-    lead: text`Jag bygger saker för webben, och oftast designar jag dem också. Efter drygt tretton år har jag hunnit vara utvecklaren, designern och under en period utvecklingsansvarig, åt startups, byråer och några riktigt stora organisationer.`,
+    lead: text`Jag bygger saker för webben, och oftast designar jag dem också. Efter 13+\u00a0år har jag hunnit vara utvecklaren, designern och under en period utvecklingsansvarig, åt startups, byråer och några riktigt stora organisationer.`,
 
     about: {
       heading: 'Om mig',
