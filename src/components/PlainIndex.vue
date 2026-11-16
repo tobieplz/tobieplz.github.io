@@ -57,8 +57,10 @@ watch(
   () => {
     if (heldAt === undefined || !button.value) return
 
+    // The page has no smooth scrolling, so this is there at once. Naming a
+    // behaviour would say so, but not every browser knows the word for it.
     const moved = button.value.getBoundingClientRect().top - heldAt
-    if (moved !== 0) window.scrollBy({ top: moved, behavior: 'instant' })
+    if (moved !== 0) window.scrollBy(0, moved)
   },
   { flush: 'post' },
 )

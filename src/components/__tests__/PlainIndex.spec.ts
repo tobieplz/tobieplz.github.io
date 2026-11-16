@@ -22,7 +22,7 @@ const manyRows: PlainRow[] = [
 const more = (count: number) => `${count} more employers`
 
 // jsdom lays nothing out, so it cannot scroll either.
-const scrollBy = vi.fn<(options: ScrollToOptions) => void>()
+const scrollBy = vi.spyOn(window, 'scrollBy').mockImplementation(() => undefined)
 
 /** jsdom has no matchMedia, so the visitor's wish for less motion is answered here. */
 function preferReducedMotion(reduce: boolean): void {
@@ -33,7 +33,6 @@ function preferReducedMotion(reduce: boolean): void {
 
 beforeEach(() => {
   scrollBy.mockClear()
-  window.scrollBy = scrollBy as typeof window.scrollBy
   preferReducedMotion(false)
 })
 
@@ -200,8 +199,8 @@ describe('PlainIndex', () => {
 
       // The third row left it where it was held, so the page stayed where it was.
       expect(scrollBy.mock.calls).toEqual([
-        [{ top: -50, behavior: 'instant' }],
-        [{ top: -60, behavior: 'instant' }],
+        [0, -50],
+        [0, -60],
       ])
     })
 
