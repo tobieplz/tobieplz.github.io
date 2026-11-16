@@ -22,7 +22,7 @@ export const site: Site = {
     // A full URL, e.g. 'https://www.linkedin.com/in/…'
     linkedin: '',
     // A username only
-    github: '',
+    github: 'tobieplz',
   },
 
   repository: 'https://github.com/tobieplz/tobieplz.github.io',
