@@ -5,6 +5,7 @@ import { reactive, useId } from 'vue'
 import { useContent } from '@/content/context'
 import type { Project } from '@/content/schema'
 import { dotted, numbered } from '@/content/text'
+import { vFeed } from '@/directives/feed'
 import { slotNumber } from '@/vault/names'
 import RedactedName from './RedactedName.vue'
 import RichText from './RichText.vue'
@@ -80,7 +81,12 @@ function clientLabel({ client }: Project): string {
           ></button>
         </div>
 
-        <div :id="`${baseId}-${row}`" class="work__details prose" :hidden="!open.has(row)">
+        <div
+          :id="`${baseId}-${row}`"
+          v-feed="open.has(row)"
+          class="work__details prose"
+          :hidden="!open.has(row)"
+        >
           <p v-for="(paragraph, index) in project.story" :key="index">
             <RichText :text="paragraph" />
           </p>
@@ -122,15 +128,42 @@ function clientLabel({ client }: Project): string {
   grid-column: stack;
 }
 
+/*
+ * A write-up comes out and goes back in steps (see `v-feed`), cut off at the
+ * height it has got to. Not at the sides, though, where the outline of a
+ * focused name reaches past the text.
+ */
 .work__details {
   grid-column: who / end;
-  padding-block: var(--space-2) var(--space-6);
+  overflow-y: clip;
+}
+
+/*
+ * Closed, a write-up is still in the page, at no height: `hidden` only says
+ * which of the two it is. That lets its lines be measured, and it can stay in
+ * sight until the last of them has gone back in. `visibility` keeps a closed
+ * write-up from keyboards and screen readers.
+ */
+.work__details[hidden] {
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+/* The space over and under the text is on its paragraphs, so that the block can go down to nothing. */
+.work__details > :first-child {
+  padding-top: var(--space-2);
+}
+
+.work__details > :last-child {
+  padding-bottom: var(--space-6);
 }
 
 /* Without JavaScript the rows cannot be opened, so show every write-up. */
 @media (scripting: none) {
   .work__details[hidden] {
-    display: block;
+    height: auto;
+    visibility: visible;
   }
 
   .work__toggle {
@@ -157,11 +190,6 @@ function clientLabel({ client }: Project): string {
     display: none;
   }
 
-  /* Paper cannot be clicked, so every write-up is printed. */
-  .work__details[hidden] {
-    display: block;
-  }
-
   /*
    * On screen the table is one grid, and every line is a subgrid of it. On
    * paper a write-up has to be able to run on to the next page, and a grid
@@ -185,12 +213,26 @@ function clientLabel({ client }: Project): string {
     break-after: avoid;
   }
 
+  /* Paper cannot be clicked, so every write-up is printed. */
+  .work__details[hidden] {
+    height: auto;
+    visibility: visible;
+  }
+
   /* The font of the lines above, so that `ch` measures the same columns here as there. */
   .work__details {
     max-width: none;
     margin-left: calc(16ch + 2 * var(--index-gap));
-    padding-block: 0 var(--space-2);
+    overflow-y: visible;
     font: inherit;
+  }
+
+  .work__details > :first-child {
+    padding-top: 0;
+  }
+
+  .work__details > :last-child {
+    padding-bottom: var(--space-2);
   }
 
   .work__details p {
