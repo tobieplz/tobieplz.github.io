@@ -1,36 +1,32 @@
 <script setup lang="ts">
 /**
  * A simple index under a row of column headings: number, optional date or
- * label, name, and what it was. A `collapsible` one starts closed, as a single
- * row under the headings that opens the list when it is pressed.
+ * label, name, and what it was.
+ *
+ * Inside a section that can be closed, the list shows one row in place of its
+ * rows while the section is closed: the numbers it covers, and what is in it.
  */
-import { ref, useId } from 'vue'
+import { computed } from 'vue'
 
+import { useDisclosure } from './disclosure'
 import RichText from './RichText.vue'
-import type { PlainColumns, PlainRow, PlainToggle } from './types'
+import type { PlainColumns, PlainRow } from './types'
 
-const { collapsible } = defineProps<{
+const { rows } = defineProps<{
   columns: PlainColumns
   rows: readonly PlainRow[]
-  collapsible?: PlainToggle
+  /** What the one row says is in the list, while the section around it is closed. */
+  summary?: string
 }>()
 
-const listId = useId()
-const open = ref(collapsible === undefined)
+const section = useDisclosure()
+const closed = computed(() => section !== undefined && !section.open.value)
 
-function toggle(): void {
-  open.value = !open.value
-}
-
-/**
- * The whole row opens the list for mouse and touch. The button at its end is
- * the real control, for keyboards and screen readers.
- */
-function onRowClick(event: MouseEvent): void {
-  const target = event.target
-  if (target instanceof Element && target.closest('button')) return
-  toggle()
-}
+/** The numbers of the first and the last row: "09–21". */
+const range = computed(() => {
+  const numbers = [rows[0], rows[rows.length - 1]].map((row) => row?.no ?? '')
+  return numbers.join('–')
+})
 </script>
 
 <template>
@@ -51,32 +47,20 @@ function onRowClick(event: MouseEvent): void {
       <span v-if="columns.what !== undefined" class="index__what">{{ columns.what }}</span>
     </div>
 
+    <!-- For the pointer only. The heading of the section is the button, and says what it opens. -->
     <div
-      v-if="collapsible"
-      class="index__row index__row--action index__more"
-      :class="{ 'index__more--closed': !open }"
-      @click="onRowClick"
+      v-if="closed"
+      class="index__row index__row--action index__folded"
+      aria-hidden="true"
+      @click="section?.toggle()"
     >
-      <!-- The button carries the same words as its name, so they are not read out twice. -->
-      <span
-        class="index__more-text label"
-        :class="{ 'index__more-text--from-when': columns.when === undefined }"
-        aria-hidden="true"
-      >
-        {{ open ? collapsible.hide : collapsible.show }}
-      </span>
-      <button
-        type="button"
-        class="index__toggle index__more-toggle"
-        :aria-expanded="open"
-        :aria-controls="listId"
-        :aria-label="open ? collapsible.hide : collapsible.show"
-        @click="toggle"
-      ></button>
+      <span class="index__no index__folded-range">{{ range }}</span>
+      <span class="index__who index__folded-summary">{{ summary }}</span>
+      <span class="index__toggle index__folded-sign"></span>
     </div>
 
     <!-- role="list" because Safari drops list semantics once list-style is none. -->
-    <ol :id="listId" class="index__list" role="list" :hidden="!open">
+    <ol class="index__list" role="list" :hidden="closed">
       <li v-for="row in rows" :key="row.no" class="index__row">
         <span class="index__no" aria-hidden="true">{{ row.no }}</span>
         <span v-if="row.when !== undefined" class="index__when">
@@ -110,33 +94,43 @@ function onRowClick(event: MouseEvent): void {
 }
 
 /*
- * The row that opens and closes the list says so where the names are. Its one
- * line of text sits in the middle of the row, level with the plus at the end.
+ * The one row that stands in for the rows of a closed list. It is laid out as
+ * one of them: the numbers it covers where a number is, what is in it where a
+ * name is, and at the end the plus of a row that opens. It is the last row
+ * while it shows, and ends the list with a rule the way a last row does.
  */
-.index__more-text {
-  grid-column: who / toggle;
-  align-self: center;
-  font-weight: 700;
-}
-
-.index__more-text--from-when {
-  grid-column: when / toggle;
-}
-
-/* Closed, that row is the last one, and ends the list with a rule the way a last row does. */
-.index__more--closed {
+.index__folded {
   border-bottom: var(--rule) solid var(--ink);
 }
 
-/* The button is taller than a line of text. Pulled in, it leaves the row as tall as the others. */
-.index__more-toggle {
+/* Five characters where a number has two, so it borrows the column beside it. */
+.index__folded-range {
+  grid-column: no / who;
+  white-space: nowrap;
+}
+
+.index__folded-summary {
+  grid-column: who / toggle;
+}
+
+/* The sign is taller than a line of text. Pulled in, it leaves the row as tall as the others. */
+.index__folded-sign {
   margin-block: calc(-1 * var(--space-1));
 }
 
-/* Stacked, an empty cell would leave a blank line. */
 @media screen and (width < 56rem) {
+  /* Stacked, an empty cell would leave a blank line. */
   .index__when:empty {
     display: none;
+  }
+
+  /* The numbers go above the words, where a stacked row has its first line. */
+  .index__folded-range {
+    grid-column: when;
+  }
+
+  .index__folded-sign {
+    grid-row: 1 / span 2;
   }
 }
 
@@ -146,7 +140,7 @@ function onRowClick(event: MouseEvent): void {
     display: grid;
   }
 
-  .index__more {
+  .index__folded {
     display: none;
   }
 }
@@ -157,7 +151,7 @@ function onRowClick(event: MouseEvent): void {
     display: grid;
   }
 
-  .index__more {
+  .index__folded {
     display: none;
   }
 }

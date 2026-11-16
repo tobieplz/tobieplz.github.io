@@ -34,11 +34,6 @@ const clientColumns: PlainColumns = {
   who: columns.client,
   what: columns.project,
 }
-/** This list starts closed. What its row says before and after it is opened. */
-const clientToggle = {
-  show: index.clients.showAll(index.clients.engagements.length),
-  hide: index.clients.hide,
-}
 // The numbers continue from the main table, so that every client has one of its own.
 const clientRows: PlainRow[] = index.clients.engagements.map((engagement, position) => ({
   no: numbered(index.work.projects.length + position),
@@ -138,8 +133,18 @@ const addressLength = Math.max(...channels.map(({ text }) => text.length))
     <WorkIndex :projects="index.work.projects" />
   </IndexSection>
 
-  <IndexSection number="03" :heading="index.clients.heading" :count="clientRows.length" joined>
-    <PlainIndex :columns="clientColumns" :rows="clientRows" :collapsible="clientToggle" />
+  <IndexSection
+    number="03"
+    :heading="index.clients.heading"
+    :count="clientRows.length"
+    joined
+    collapsible
+  >
+    <PlainIndex
+      :columns="clientColumns"
+      :rows="clientRows"
+      :summary="index.clients.summary(clientRows.length)"
+    />
   </IndexSection>
 
   <IndexSection number="04" :heading="index.experience.heading" :count="jobRows.length" joined>

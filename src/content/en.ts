@@ -172,8 +172,7 @@ export const content: Content = {
 
     clients: {
       heading: 'More clients',
-      showAll: (count) => `Show all ${count} clients`,
-      hide: 'Hide the list',
+      summary: (count) => `${count} clients`,
       engagements: [
         { client: { name: 'StoEr' }, work: 'Digital system' },
         { client: 'c10', sector: 'Retail', work: 'Website' },

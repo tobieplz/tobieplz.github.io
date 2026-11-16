@@ -8,12 +8,6 @@ export interface PlainColumns {
   readonly what?: string
 }
 
-/** What the row that opens and closes a plain index says, closed and open. */
-export interface PlainToggle {
-  readonly show: string
-  readonly hide: string
-}
-
 /** One line of a plain index: a number, an optional date or label, a name and what it was. */
 export interface PlainRow {
   readonly no: string
