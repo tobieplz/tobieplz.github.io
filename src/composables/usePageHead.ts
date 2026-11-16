@@ -58,6 +58,7 @@ function locate(content: Content, page: PageId, siteUrl: string) {
   const addressOf = (locale: Locale) => siteUrl + PATHS[locale][page]
   const address = addressOf(content.locale)
   const { linkedin, github } = site.contact
+  const profiles = [linkedin, github && `https://github.com/${github}`].filter(Boolean)
 
   return {
     meta: [
@@ -87,7 +88,7 @@ function locate(content: Content, page: PageId, siteUrl: string) {
           jobTitle: content.title,
           description: content.meta.about.description,
           url: siteUrl + PATHS[content.locale].index,
-          sameAs: [linkedin, github && `https://github.com/${github}`].filter(Boolean),
+          ...(profiles.length > 0 && { sameAs: profiles }),
         }),
       },
     ],

@@ -1,6 +1,6 @@
 # Tobias Sjösten: portfolio
 
-A two-page CV and portfolio in English and Swedish, prerendered to static HTML and hosted on GitHub Pages.
+A two-page CV and portfolio in English and Swedish, prerendered to static HTML and hosted on GitHub Pages: <https://tobieplz.github.io/>.
 
 The client and employer names are confidential, and the source is public. So every company name on the site is a black cell until someone types the passphrase into one of them. Then the page decrypts in place.
 
