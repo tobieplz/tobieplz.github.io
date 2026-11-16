@@ -79,7 +79,7 @@ export const content: Content = {
           role: 'Designer & full-stack developer',
           stack: ['Expo', 'React Native', 'Headless API'],
           story: [
-            text`A one-person project for ${hidden('c01')}, started in March 2025 and still going. I do all of it: architecture, design, development, testing and deployment.`,
+            text`A one-person project for ${hidden('c01')}, started in 2025 and still going. I do all of it: architecture, design, development, testing and deployment.`,
             text`I am building an app for iOS and Android in Expo, and I wrote the headless API that serves every platform. I am also rebuilding their website with my own design, replacing a WordPress site with an older look.`,
           ],
         },
