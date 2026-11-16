@@ -1,4 +1,4 @@
-import type { ClientSlot, EmployerSlot, NameVariant, Slot } from '@/vault/names'
+import type { NameVariant, Slot } from '@/vault/names'
 import type { ContactChannel } from './site'
 
 export type Locale = 'en' | 'sv'
@@ -12,8 +12,11 @@ export interface NameRef {
 /** Prose that may mention hidden names: plain strings with references in between. */
 export type RichText = readonly (string | NameRef)[]
 
+/** The company on a row: its slot while the name is hidden, or the name itself when it is public. */
+export type Company = Slot | { readonly name: string }
+
 export interface Project {
-  readonly client: ClientSlot
+  readonly client: Company
   readonly years: string
   /** The kind of company, in words that do not identify it. */
   readonly sector: string
@@ -24,13 +27,14 @@ export interface Project {
 }
 
 export interface Engagement {
-  readonly client: ClientSlot
+  readonly client: Company
   readonly sector?: string
   readonly work: string
 }
 
 export interface Job {
-  readonly employer: EmployerSlot
+  /** Employers are named openly. */
+  readonly employer: string
   readonly years: string
   readonly title: string
 }
@@ -71,7 +75,6 @@ export interface Content {
 
   readonly vault: {
     readonly client: string
-    readonly employer: string
     /** Accessible name of a redacted cell, given its visible label ("Client 03"). */
     readonly hiddenName: (label: string) => string
     readonly passphrase: string
@@ -105,7 +108,7 @@ export interface Content {
     }
     readonly work: {
       readonly heading: string
-      /** Accessible name of a row's expand button, given the client's visible label. */
+      /** Accessible name of a row's expand button, given what the row shows for its client. */
       readonly details: (label: string) => string
       readonly projects: readonly Project[]
     }

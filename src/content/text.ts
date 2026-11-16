@@ -6,6 +6,11 @@ export function hidden(slot: Slot, variant: NameVariant = 'name'): NameRef {
   return { slot, variant }
 }
 
+/** Row numbers as they are printed: 01, 02, 03 for positions 0, 1, 2. */
+export function numbered(position: number): string {
+  return String(position + 1).padStart(2, '0')
+}
+
 /**
  * Sets a short list on one line with dots between the items. The space before
  * a dot does not break, so a wrapped line never starts with one.

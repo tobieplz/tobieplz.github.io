@@ -1,23 +1,31 @@
 import { describe, expect, it } from 'vitest'
 
-import { SLOTS } from '@/vault/names'
+import { SLOTS, slotNumber } from '@/vault/names'
 import { content as en } from '../en'
-import type { Content, RichText } from '../schema'
+import type { Company, Content, RichText } from '../schema'
 import { content as sv } from '../sv'
-import { dotted, hidden, text } from '../text'
+import { dotted, hidden, numbered, text } from '../text'
+
+/** Every client with a row of its own, in the order of the page. */
+function clientsIn(content: Content): Company[] {
+  return [
+    ...content.index.work.projects.map((project) => project.client),
+    ...content.index.clients.engagements.map((engagement) => engagement.client),
+  ]
+}
 
 /** The slots a locale mentions, in order: what a reader would see as black cells. */
 function slotsIn(content: Content): string[] {
   const inProse = (paragraphs: readonly RichText[]) =>
     paragraphs.flat().flatMap((segment) => (typeof segment === 'string' ? [] : [segment.slot]))
+  const slotOf = (company: Company) => (typeof company === 'string' ? [company] : [])
 
   return [
     ...content.index.work.projects.flatMap((project) => [
-      project.client,
+      ...slotOf(project.client),
       ...inProse(project.story),
     ]),
-    ...content.index.clients.engagements.map((engagement) => engagement.client),
-    ...content.index.experience.jobs.map((job) => job.employer),
+    ...content.index.clients.engagements.flatMap((engagement) => slotOf(engagement.client)),
     ...inProse([content.index.lead, ...content.index.about.bio]),
   ]
 }
@@ -29,6 +37,23 @@ describe('the two languages', () => {
 
   it('give every hidden name somewhere to appear', () => {
     expect(new Set(slotsIn(en))).toEqual(new Set(SLOTS))
+  })
+
+  it('number every hidden name after the row it is on', () => {
+    const hiddenRows = clientsIn(en).flatMap((client, position) =>
+      typeof client === 'string' ? [{ slot: client, row: numbered(position) }] : [],
+    )
+
+    expect(hiddenRows.map(({ slot }) => slotNumber(slot))).toEqual(hiddenRows.map(({ row }) => row))
+  })
+
+  it('name the same companies openly', () => {
+    const named = (content: Content) => ({
+      clients: clientsIn(content),
+      employers: content.index.experience.jobs.map((job) => job.employer),
+    })
+
+    expect(named(sv)).toEqual(named(en))
   })
 
   it('agree on the facts that do not translate', () => {
@@ -64,7 +89,13 @@ describe('text', () => {
   })
 
   it('drops the empty strings around a reference at either end', () => {
-    expect(text`${hidden('e01')}`).toEqual([{ slot: 'e01', variant: 'name' }])
+    expect(text`${hidden('c01')}`).toEqual([{ slot: 'c01', variant: 'name' }])
+  })
+})
+
+describe('numbered', () => {
+  it('counts from one and pads to two digits', () => {
+    expect([0, 8, 20].map(numbered)).toEqual(['01', '09', '21'])
   })
 })
 

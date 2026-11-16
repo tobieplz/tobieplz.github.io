@@ -2,7 +2,7 @@
 
 A one-page CV and portfolio in English and Swedish, prerendered to static HTML and hosted on GitHub Pages: <https://tobieplz.github.io/>.
 
-The client and employer names are confidential, and the source is public. So every company name on the site is a black cell until someone types the passphrase into one of them. Then the page decrypts in place.
+Most of the client names are confidential, and the source is public. So each of those names is a black cell until someone types the passphrase into one of them. Then the page decrypts in place.
 
 ## Stack
 
@@ -23,7 +23,7 @@ There is no store library, no CSS framework, no i18n library, no analytics and n
 
 GitHub Pages serves static files, so no server can check a password. The names therefore never exist in readable form in the repository or in the built site.
 
-- `private/names.json` holds the real names, keyed by neutral ids such as `c03` and `e02`. It is gitignored.
+- `private/names.json` holds the real names, keyed by neutral ids such as `c03`. It is gitignored.
 - `pnpm seal` encrypts that file with a passphrase into `src/vault/sealed.json`, which is committed. The cipher is AES-256-GCM. The key is derived from the passphrase with PBKDF2-SHA-256 at 600,000 rounds, with a random salt. The payload is padded, so its size says nothing about the names.
 - The page only ever refers to the ids. When a visitor types the passphrase, the browser derives the same key and decrypts. A wrong passphrase simply fails to decrypt; no password or hash is stored anywhere.
 - `pnpm check:leaks` searches the built site and every file git would track for each private name, and fails if it finds one. It runs after every build and before every commit.
@@ -64,7 +64,7 @@ pnpm install
 
 ## Changing things
 
-**Copy.** Everything a visitor reads is in `src/content/en.ts` and `src/content/sv.ts`. Both implement the same `Content` type, so a field missing from one language is a compile error. Refer to a company by its slot, never by name:
+**Copy.** Everything a visitor reads is in `src/content/en.ts` and `src/content/sv.ts`. Both implement the same `Content` type, so a field missing from one language is a compile error. Refer to a hidden client by its slot, never by name:
 
 ```ts
 text`Frontend developer at ${hidden('c03')}.`

@@ -4,8 +4,8 @@ import { reactive, useId } from 'vue'
 
 import { useContent } from '@/content/context'
 import type { Project } from '@/content/schema'
-import { dotted } from '@/content/text'
-import { slotNumber, type ClientSlot } from '@/vault/names'
+import { dotted, numbered } from '@/content/text'
+import { slotNumber } from '@/vault/names'
 import RedactedName from './RedactedName.vue'
 import RichText from './RichText.vue'
 
@@ -14,26 +14,28 @@ defineProps<{ projects: readonly Project[] }>()
 const content = useContent()
 const { columns, work } = content.index
 const baseId = useId()
-const open = reactive(new Set<ClientSlot>())
+/** The rows that are open, by their position in the table. */
+const open = reactive(new Set<number>())
 
-function toggle(client: ClientSlot): void {
-  if (!open.delete(client)) open.add(client)
+function toggle(row: number): void {
+  if (!open.delete(row)) open.add(row)
 }
 
 /**
  * The whole line opens the project for mouse and touch. The button at its end
  * is the real control, for keyboards and screen readers.
  */
-function onLineClick(event: MouseEvent, client: ClientSlot): void {
+function onLineClick(event: MouseEvent, row: number): void {
   const target = event.target
   if (target instanceof Element && target.closest('a, button, input')) return
   // Someone dragging to select text is not asking to open the row.
   if (window.getSelection()?.toString()) return
-  toggle(client)
+  toggle(row)
 }
 
-function detailsLabel(client: ClientSlot): string {
-  return work.details(`${content.vault.client} ${slotNumber(client)}`)
+/** What a row shows for its client: the label of its black cell, or the name when that is public. */
+function clientLabel({ client }: Project): string {
+  return typeof client === 'string' ? `${content.vault.client} ${slotNumber(client)}` : client.name
 }
 </script>
 
@@ -49,14 +51,17 @@ function detailsLabel(client: ClientSlot): string {
 
     <!-- role="list" because Safari drops list semantics once list-style is none. -->
     <ol class="work__list" role="list">
-      <li v-for="project in projects" :key="project.client" class="work__item">
-        <div class="index__row work__line" @click="onLineClick($event, project.client)">
-          <span class="index__no" aria-hidden="true">{{ slotNumber(project.client) }}</span>
+      <li v-for="(project, row) in projects" :key="row" class="work__item">
+        <div class="index__row work__line" @click="onLineClick($event, row)">
+          <span class="index__no" aria-hidden="true">{{ numbered(row) }}</span>
           <span class="index__when">
             <span class="visually-hidden">{{ columns.years }}: </span>{{ project.years }}
           </span>
           <span class="work__client">
-            <span class="index__who"><RedactedName :slot-id="project.client" /></span>
+            <span class="index__who">
+              <RedactedName v-if="typeof project.client === 'string'" :slot-id="project.client" />
+              <template v-else>{{ project.client.name }}</template>
+            </span>
             <span class="work__sector">{{ project.sector }}</span>
           </span>
           <span class="work__role">
@@ -68,18 +73,14 @@ function detailsLabel(client: ClientSlot): string {
           <button
             type="button"
             class="work__toggle"
-            :aria-expanded="open.has(project.client)"
-            :aria-controls="`${baseId}-${project.client}`"
-            :aria-label="detailsLabel(project.client)"
-            @click="toggle(project.client)"
+            :aria-expanded="open.has(row)"
+            :aria-controls="`${baseId}-${row}`"
+            :aria-label="work.details(clientLabel(project))"
+            @click="toggle(row)"
           ></button>
         </div>
 
-        <div
-          :id="`${baseId}-${project.client}`"
-          class="work__details prose"
-          :hidden="!open.has(project.client)"
-        >
+        <div :id="`${baseId}-${row}`" class="work__details prose" :hidden="!open.has(row)">
           <p v-for="(paragraph, index) in project.story" :key="index">
             <RichText :text="paragraph" />
           </p>

@@ -80,12 +80,6 @@ describe('RedactedName', () => {
     )
   })
 
-  it('labels employers as employers', () => {
-    const { vault } = fakeVault()
-
-    expect(mountCell(vault, { slotId: 'e02' }).get('button').text()).toBe('Employer 02')
-  })
-
   it('becomes a focused passphrase field when pressed', async () => {
     const { vault } = fakeVault()
     const wrapper = mountCell(vault, { slotId: 'c03' })

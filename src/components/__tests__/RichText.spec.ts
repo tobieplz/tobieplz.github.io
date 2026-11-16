@@ -44,9 +44,9 @@ describe('RichText', () => {
   })
 
   it('renders a name that stands alone', () => {
-    const wrapper = render([hidden('e01')])
+    const wrapper = render([hidden('c03')])
 
-    expect(wrapper.text()).toBe('e01')
+    expect(wrapper.text()).toBe('c03')
     expect(wrapper.findAll('.together')).toHaveLength(0)
   })
 })

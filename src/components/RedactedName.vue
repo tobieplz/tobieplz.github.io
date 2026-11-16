@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * One hidden company name. It is three things in turn:
+ * One hidden client name. It is three things in turn:
  *
  *   locked    a black cell labelled "Client 03"; a button
  *   entering  the same cell as a text field, for typing the passphrase into
@@ -10,7 +10,7 @@ import { computed, nextTick, onScopeDispose, ref, useId, useTemplateRef, watch }
 
 import { useScramble } from '@/composables/useScramble'
 import { useContent } from '@/content/context'
-import { slotKind, slotNumber, type NameVariant, type Slot } from '@/vault/names'
+import { slotNumber, type NameVariant, type Slot } from '@/vault/names'
 import { useVault } from '@/vault/vault'
 
 /** After this long without a keystroke the page quietly tries what has been typed. */
@@ -35,7 +35,7 @@ const keepFocus = ref(false)
 let quietTimer: ReturnType<typeof setTimeout> | undefined
 let shakeTimer: ReturnType<typeof setTimeout> | undefined
 
-const label = computed(() => `${copy[slotKind(slotId)]} ${slotNumber(slotId)}`)
+const label = computed(() => `${copy.client} ${slotNumber(slotId)}`)
 const name = computed(() => {
   const entry = vault.names.value?.[slotId]
   return entry ? (entry[variant] ?? entry.name) : null

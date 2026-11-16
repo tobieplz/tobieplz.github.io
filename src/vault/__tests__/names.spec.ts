@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { parseNames, SLOTS, slotKind, slotNumber } from '../names'
+import { parseNames, SLOTS, slotNumber } from '../names'
 
 function completeNames(): Record<string, Record<string, unknown>> {
   return Object.fromEntries(SLOTS.map((slot) => [slot, { name: `Name ${slot}` }]))
@@ -16,9 +16,9 @@ describe('parseNames', () => {
 
   it('rejects a missing slot', () => {
     const names = completeNames()
-    delete names.e06
+    delete names.c21
 
-    expect(() => parseNames(names)).toThrow('Missing slot ids: e06')
+    expect(() => parseNames(names)).toThrow('Missing slot ids: c21')
   })
 
   it('rejects an unknown slot', () => {
@@ -40,10 +40,8 @@ describe('parseNames', () => {
   })
 })
 
-describe('slot helpers', () => {
-  it('reads the kind and number off the id', () => {
-    expect(slotKind('c03')).toBe('client')
-    expect(slotKind('e02')).toBe('employer')
+describe('slotNumber', () => {
+  it('reads the number off the id', () => {
     expect(slotNumber('c03')).toBe('03')
   })
 })

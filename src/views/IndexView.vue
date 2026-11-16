@@ -10,9 +10,9 @@ import WorkIndex from '@/components/WorkIndex.vue'
 import type { PlainRow } from '@/components/types'
 import { usePageHead } from '@/composables/usePageHead'
 import { useContent } from '@/content/context'
+import type { Company } from '@/content/schema'
 import { site, type ContactChannel } from '@/content/site'
-import { hidden } from '@/content/text'
-import { slotNumber } from '@/vault/names'
+import { hidden, numbered } from '@/content/text'
 
 const { index } = useContent()
 
@@ -23,20 +23,22 @@ const portraitSources = `${portraitSmall} ${portraitSize.smallWidth}w, ${portrai
 /** How wide the photo is shown: beside the text from 56rem up, above it on narrower screens. */
 const PORTRAIT_SIZES = '(min-width: 72rem) 34vw, (min-width: 56rem) 43vw, min(100vw - 2rem, 24rem)'
 
-const numbered = (position: number) => String(position + 1).padStart(2, '0')
+/** What a row shows for its company: a black cell, or the name when that is public. */
+const shown = (company: Company): PlainRow['who'] =>
+  typeof company === 'string' ? [hidden(company)] : [company.name]
 
-// The numbers continue from the main table, so they match the labels on the cells.
-const clientRows: PlainRow[] = index.clients.engagements.map((engagement) => ({
-  no: slotNumber(engagement.client),
+// The numbers continue from the main table, so that every client has one of its own.
+const clientRows: PlainRow[] = index.clients.engagements.map((engagement, position) => ({
+  no: numbered(index.work.projects.length + position),
   when: engagement.sector ?? '',
-  who: [hidden(engagement.client)],
+  who: shown(engagement.client),
   what: engagement.work,
 }))
 
 const jobRows: PlainRow[] = index.experience.jobs.map((job, position) => ({
   no: numbered(position),
   when: job.years,
-  who: [hidden(job.employer)],
+  who: [job.employer],
   what: job.title,
 }))
 

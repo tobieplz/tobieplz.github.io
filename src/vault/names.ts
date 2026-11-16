@@ -1,26 +1,26 @@
 /**
- * Neutral ids for every hidden company name, and the shape of the private data
+ * Neutral ids for every hidden client name, and the shape of the private data
  * behind them. Public code and copy only ever use the ids; the real names live
  * in the sealed vault.
+ *
+ * A slot is numbered after the row its client has on the page, which is the
+ * number a reader sees on the black cell. A row whose company is named openly
+ * has no slot, so the numbers have gaps.
  *
  * No imports here either: the Node scripts load this file directly.
  */
 
-export const CLIENT_SLOTS = [
+export const SLOTS = [
   'c01',
   'c02',
   'c03',
   'c04',
   'c05',
   'c06',
-  'c07',
   'c08',
-  'c09',
   'c10',
   'c11',
-  'c12',
   'c13',
-  'c14',
   'c15',
   'c16',
   'c17',
@@ -30,18 +30,7 @@ export const CLIENT_SLOTS = [
   'c21',
 ] as const
 
-export const EMPLOYER_SLOTS = ['e01', 'e02', 'e03', 'e04', 'e05', 'e06'] as const
-
-export type ClientSlot = (typeof CLIENT_SLOTS)[number]
-export type EmployerSlot = (typeof EMPLOYER_SLOTS)[number]
-export type Slot = ClientSlot | EmployerSlot
-export type SlotKind = 'client' | 'employer'
-
-export const SLOTS: readonly Slot[] = [...CLIENT_SLOTS, ...EMPLOYER_SLOTS]
-
-export function slotKind(slot: Slot): SlotKind {
-  return slot.startsWith('c') ? 'client' : 'employer'
-}
+export type Slot = (typeof SLOTS)[number]
 
 /** The two digits shown on a redacted cell: `c03` reads "Client 03". */
 export function slotNumber(slot: Slot): string {

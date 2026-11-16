@@ -26,7 +26,6 @@ export const content: Content = {
 
   vault: {
     client: 'Kund',
-    employer: 'Arbetsgivare',
     hiddenName: (label) => `${label}, namnet är dolt. Tryck för att ange lösenfrasen.`,
     passphrase: 'Lösenfras',
     withheld: (count) => `${count} namn dolda`,
@@ -138,13 +137,13 @@ export const content: Content = {
           ],
         },
         {
-          client: 'c07',
+          client: { name: 'Skicka Direkt / PostNord' },
           years: '2021–2023',
           sector: 'Logistik',
           role: 'Frontendutvecklare & designer',
           stack: ['Vue', 'Figma'],
           story: [
-            text`Designer och frontendutvecklare för alla företagstjänster hos ${hidden('c07', 'short')}. Vue i frontenden, responsiv design och flöden anpassade för både desktop och mobil.`,
+            text`Designer och frontendutvecklare för alla företagstjänster hos Skicka Direkt. Vue i frontenden, responsiv design och flöden anpassade för både desktop och mobil.`,
           ],
         },
         {
@@ -165,12 +164,12 @@ export const content: Content = {
     clients: {
       heading: 'Fler kunder',
       engagements: [
-        { client: 'c09', work: 'Digitalt system' },
+        { client: { name: 'StoEr' }, work: 'Digitalt system' },
         { client: 'c10', sector: 'Handel', work: 'Webbplats' },
         { client: 'c11', sector: 'Spel', work: 'Webbplats' },
-        { client: 'c12', sector: 'Konsult', work: 'Webbplats' },
+        { client: { name: 'Deloitte' }, sector: 'Konsult', work: 'Webbplats' },
         { client: 'c13', sector: 'Försäkring', work: 'Chattbot' },
-        { client: 'c14', sector: 'Byrå', work: 'Webbplats' },
+        { client: { name: 'Mobiento' }, sector: 'Byrå', work: 'Webbplats' },
         { client: 'c15', sector: 'Industri', work: 'iOS-app' },
         { client: 'c16', sector: 'Försäkring', work: 'Säljverktyg online' },
         { client: 'c17', sector: 'Bygg', work: 'Digitala tjänster' },
@@ -184,16 +183,20 @@ export const content: Content = {
     experience: {
       heading: 'Erfarenhet',
       jobs: [
-        { employer: 'e01', years: '2023–nu', title: 'Senior frontendutvecklare' },
+        { employer: 'Esatto', years: '2023–nu', title: 'Senior frontendutvecklare' },
         {
-          employer: 'e02',
+          employer: 'PostNord',
           years: '2021–2023',
           title: 'Senior frontendutvecklare & design engineer',
         },
-        { employer: 'e03', years: '2019–2021', title: 'Senior frontendutvecklare' },
-        { employer: 'e04', years: '2018–2019', title: 'Design engineer' },
-        { employer: 'e05', years: '2015–2018', title: 'iOS- & webbutvecklare' },
-        { employer: 'e06', years: '2013–2015', title: 'iOS- & webbutvecklare' },
+        { employer: 'Utvecklarbolaget', years: '2019–2021', title: 'Senior frontendutvecklare' },
+        { employer: 'StoEr', years: '2018–2019', title: 'Design engineer' },
+        {
+          employer: 'Mobiento / Deloitte Digital',
+          years: '2015–2018',
+          title: 'iOS- & webbutvecklare',
+        },
+        { employer: 'HiQ', years: '2013–2015', title: 'iOS- & webbutvecklare' },
       ],
     },
 
